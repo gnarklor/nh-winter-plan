@@ -175,7 +175,12 @@ dialog::backdrop{background:rgba(20,30,25,.45)}
 .how ol{margin:0;padding-left:18px}
 .how ol li{margin:0 0 2px}
 .donebox{background:var(--spruce-2);border-radius:var(--r-md);padding:8px 12px;font-weight:600;color:var(--spruce)}
-.start .tips{font-size:16px;color:var(--ink);margin:4px 0 12px;padding-left:18px}
+.callout{font-size:16.5px;line-height:1.5;color:var(--ink);background:var(--amber-2);border-left:5px solid var(--amber);border-radius:0 var(--r-md) var(--r-md) 0;padding:12px 16px;margin:12px 0}
+.callout b.lead{display:block;font-size:17px;color:#5c3c00;margin-bottom:2px}
+.callout ul{margin:4px 0 0;padding-left:20px}.callout li{margin:4px 0}
+.howbtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;margin:0 0 14px;border-radius:999px;border:1.5px solid var(--spruce);background:var(--spruce-2);color:var(--spruce);font:600 15px var(--body);cursor:pointer}
+.howbtn[hidden]{display:none}
+.howbtn .q{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--spruce);color:#fff;font-size:14px}
 .linkbtn{background:none;border:0;padding:0;color:var(--spruce);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px}
 .linkbtn.inline{min-height:0;padding:4px 0;font-weight:600}
 .how div.other{display:none}
@@ -255,25 +260,27 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
           <div data-os="desktop"><h4>Computer</h4><ol><li>Bookmark this page: press <b>Ctrl + D</b> (Windows) or <b>⌘ + D</b> (Mac).</li><li>Always open it from that bookmark, in the same browser.</li></ol></div>
         </div>
         <button type="button" class="linkbtn" id="otherDevices" hidden>Show steps for other phones and computers</button>
-        <p class="note" id="inAppNote" hidden style="margin:6px 0 0">Don't see those options? You may have opened the link inside Messages, Facebook or email. Tap the menu and choose "Open in Safari" or "Open in Chrome" first.</p>
+        <div class="callout" id="inAppNote" hidden><b class="lead">Don't see those options?</b>You may have opened the link inside Messages, Facebook or email. Tap the menu (often <b>⋯</b> or <b>⋮</b>) and choose <b>"Open in Safari"</b> or <b>"Open in Chrome"</b> first.</div>
       </li>
       <li><b>Put in your name.</b> Tap <button type="button" class="linkbtn inline" data-go="home">Our household</button> and change "Me" to your name. Add anyone else in your home you're keeping track of.</li>
       <li><b>Check things off as you get them.</b> For water and cans, type how many you have. Before you go shopping, turn on "Show only what's still needed."</li>
     </ol>
-    <ul class="tips">
-      <li>Always open the app from the home-screen icon. It works without internet after the first time.</li>
-      <li>Got a new phone? Use Print &amp; save, then "Download plan backup" first.</li>
-    </ul>
+    <div class="callout"><b class="lead">Remember</b><ul>
+      <li><b>Always open the app from the home-screen icon.</b> It works without internet after the first time.</li>
+      <li><b>Got a new phone?</b> Use Print &amp; save, then "Download plan backup" first.</li>
+    </ul></div>
     <div style="display:flex;flex-wrap:wrap;gap:10px">
       <button class="btn solid" type="button" id="hideStart">Got it, hide this</button>
       <button class="btn" type="button" id="shareBtn">Send this app to family</button>
     </div>
+    <p class="note" style="margin:10px 0 0;color:var(--ink)">Hiding this is safe. Tap <b>"How to use this app"</b> at the top of the Checklist to bring it back.</p>
   </section>
   <div id="storageWarn" class="banner" hidden>This browser is blocking storage, so your progress will disappear when you close it. Use "Print &amp; save" to download a backup file.</div>
 
   <!-- CHECKLIST -->
   <section class="view" id="v-list" aria-labelledby="h-list">
     <h2 id="h-list">Checklist</h2>
+    <button type="button" class="howbtn" id="showStart2" hidden><span class="q" aria-hidden="true">?</span>How to use this app</button>
     <p class="sub">Pick a person. Each person works toward the same two-week target. Shared items, like the radio and CO detector, are counted once for the whole home.</p>
     <div class="people" id="peopleChips" role="group" aria-label="Choose a person"></div>
     <div class="stats" id="stats"></div>
@@ -769,8 +776,9 @@ function setupStart(){
   if(!standalone&&(/FBAN|FBAV|Instagram|Line\/|GSA\/|; wv\)/.test(ua)||(isIOS&&/CriOS|FxiOS|EdgiOS/.test(ua))))$('#inAppNote').hidden=false;
   updateStart();
 }
-function updateStart(){const onList=!$('#v-list').hidden;$('#startHere').hidden=!(onList&&!S.hideStart);}
-$('#hideStart').addEventListener('click',()=>{S.hideStart=true;save();updateStart();toast('Hidden. Tap "How to use this app" at the bottom to see it again.');});
+function updateStart(){const onList=!$('#v-list').hidden;$('#startHere').hidden=!(onList&&!S.hideStart);$('#showStart2').hidden=!S.hideStart;}
+$('#hideStart').addEventListener('click',()=>{S.hideStart=true;save();updateStart();toast('Hidden. Tap "How to use this app" at the top of the Checklist to see it again.');});
+$('#showStart2').addEventListener('click',()=>$('#showStart').click());
 $('#showStart').addEventListener('click',()=>{S.hideStart=false;save();show('list');updateStart();$('#startHere').scrollIntoView({behavior:'smooth'});});
 const shareURL=()=>(location.protocol.startsWith('http')&&location.hostname.endsWith('github.io'))?location.href.split('#')[0]:PUBLIC_URL;
 const shareMsg=()=>`Here's our family winter emergency checklist. It shows what each person needs for 2 weeks without power, and what to do in an outage.\n\n1. Tap this link: ${shareURL()}\n2. Put it on your home screen. iPhone: in Safari, tap Share, then "Add to Home Screen." Android: in Chrome, tap the 3 dots, then "Add to Home screen."\n3. Open it from that icon each time and it remembers what you've checked off.\n\nNothing you type is sent anywhere. It stays on your phone.`;
