@@ -528,7 +528,10 @@ const COUNTIES={
 const STATIONS=[['Pack Monadnock','162.525'],['Concord','162.400'],['Deerfield','162.450'],['Holderness','162.550'],['Hanover','162.525'],['Mt. Washington','162.500'],['Clarksville','162.400']];
 const HFIELDS=[
  ['utility','Electric company outage line','tel','It\u2019s printed on your electric bill','Company'],
- ['family','Family contact','tel','','Name'],
+ ['family','Family contact 1','tel','','Name'],
+ ['family2','Family contact 2','tel','','Name'],
+ ['family3','Family contact 3','tel','','Name'],
+ ['family4','Family contact 4','tel','','Name'],
  ['outside','Out-of-area contact','tel','Someone far away is often easier to reach','Name'],
  ['neighbor','Neighbor','tel','','Name'],
  ['meet','Meeting place','text','If we can\u2019t stay home or get separated'],
@@ -633,7 +636,7 @@ function renderEmergency(){
   const F=S.fields,co=COUNTIES[S.home.county];
   const calls=[['911','Danger, fire, CO alarm, medical emergency','911',1],['211','Warming centers, shelters, fuel help','211',0]];
   const cards=calls.map(([b,t,n,r])=>`<a class="call${r?' red':''}" href="tel:${n}"><b>${b}</b><span>${t}</span></a>`);
-  [['utility','Report power outage'],['family','Family contact'],['outside','Out-of-area contact'],['neighbor','Neighbor']].forEach(([k,t])=>{
+  [['utility','Report power outage'],['family','Family contact'],['family2','Family contact'],['family3','Family contact'],['family4','Family contact'],['outside','Out-of-area contact'],['neighbor','Neighbor']].forEach(([k,t])=>{if(/family[234]/.test(k)&&!F[k])return;
     const nm=F[k+'Name'];cards.push(F[k]?`<a class="call" href="${telHref(F[k])}"><b>${esc(F[k])}</b><span>${t}${nm?': <strong>'+esc(nm)+'</strong>':''}</span></a>`:`<button class="call missing" type="button" data-go="home" style="text-align:left;font:inherit;cursor:pointer"><b style="font-size:16px">Add number</b><span>${t}</span></button>`);});
   if(co)co.caa.forEach(([n,ph])=>cards.push(`<a class="call" href="${telHref(ph)}"><b>${ph}</b><span>${esc(n)} (fuel and heating help)</span></a>`));
   $('#callgrid').innerHTML=cards.join('');
@@ -658,7 +661,7 @@ function renderPaper(){
   if(what==='info'){
     const B='<span class="blank"></span>';const cell=v=>v?esc(v):B;
     const co=COUNTIES[S.home.county];const stn=STATIONS.find(x=>x[0]===S.home.station);
-    const contacts=[['Electric company (outage line)','utility'],['Family contact','family'],['Out-of-area contact','outside'],['Neighbor','neighbor']];
+    const contacts=[['Electric company (outage line)','utility'],['Family contact 1','family'],['Family contact 2','family2'],['Family contact 3','family3'],['Family contact 4','family4'],['Out-of-area contact','outside'],['Neighbor','neighbor']];
     const fmtDate=d=>{if(!d)return '';const [y,m,dd]=d.split('-');return `${+m}/${+dd}/${y}`;};
     let h=`<div class="pcard sheet"><h3>Our household emergency info</h3><p class="note" style="margin:0">Printed ${new Date().toLocaleDateString()}${S.home.review?' · Supplies last checked '+fmtDate(S.home.review):''}</p>
     <h4>Emergency numbers</h4><table class="t"><tbody>
@@ -689,7 +692,7 @@ function renderPaper(){
   }
   if(what==='card'){
     const who=k=>[F[k+'Name'],F[k]].filter(Boolean).join(' · ');
-    const shared=dl([['Electric outage',who('utility')],['Family',who('family')],['Out-of-area',who('outside')],['Neighbor',who('neighbor')],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
+    const shared=dl([['Electric outage',who('utility')],['Family',who('family')],['Family',who('family2')],['Family',who('family3')],['Family',who('family4')],['Out-of-area',who('outside')],['Neighbor',who('neighbor')],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
     const co=COUNTIES[S.home.county];
     $('#paper').innerHTML=list.map(p=>{const m=S.med[p.id]||{};return `<div class="pcard"><h3>${esc(p.name||'Emergency card')}</h3>
       <p class="big" style="margin:2px 0 6px">911 for danger · 211 for warming centers and help</p>
