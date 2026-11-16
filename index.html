@@ -205,6 +205,12 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   .sheet table.t td,.sheet table.t th{padding:4px 6px}
   .sheet h4{margin:9px 0 2px}
   @page{margin:0.5in}
+  .pcard.wallet{width:3.4in;font-size:8.5pt;border:1.5px dashed #000;padding:10px 12px;display:inline-block;vertical-align:top;margin:0 0.1in 0.15in 0}
+  .pcard.wallet h3{font-size:14pt}
+  .pcard.wallet .big{font-size:11pt}
+  .pcard.wallet .two{grid-template-columns:1fr;gap:0}
+  .pcard.wallet dl,.pcard.wallet ul{font-size:8.5pt;margin:3px 0;line-height:1.35}
+  .pcard.wallet ul{padding-left:14px}
   .wrap{max-width:none;padding:0}
 }
 </style>
@@ -383,14 +389,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   <!-- PRINT & SAVE -->
   <section class="view" id="v-print" aria-labelledby="h-print" hidden>
     <h2 id="h-print">Print &amp; save</h2>
-    <p class="sub">Phones die and Wi-Fi goes down, so print a card for the fridge and one for each kit. You can also save the whole app to a phone or a USB stick.</p>
+    <p class="sub">Phones die and Wi-Fi goes down, so print the full info page for the fridge and a wallet card for each person. You can also save the whole app to a phone or a USB stick.</p>
     <div class="panel noprint">
       <h3>Printable pages</h3>
       <div class="printopts">
         <label for="printWhat" class="sr">Print</label>
         <select id="printWhat">
           <option value="info">Contacts and household info (full page)</option>
-          <option value="card">Emergency card</option>
+          <option value="card">Wallet card (one per person)</option>
           <option value="shop">Shopping list (what's still needed)</option>
         </select>
         <select id="printWho" aria-label="Who"></select>
@@ -413,7 +419,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
       <ul class="note" style="margin:12px 0 0;padding-left:18px">
         <li>The offline copy is a single file. Open it in any browser, even with no internet. Share it with family by text, email or USB stick.</li>
         <li>Each person can keep their own copy on their phone and use the "Show only what's still needed" filter as a shopping list.</li>
-        <li>Save a photo of the printed card on your phone too.</li>
+        <li>Take a photo of the printed pages and wallet card on your phone too.</li>
       </ul>
     </div>
   </section>
@@ -449,7 +455,7 @@ const uid=()=>Math.random().toString(36).slice(2,9);
 const PERSON=[
  {id:'free',title:'Free steps',why:'why-cyber',items:[
   ['alerts','Sign up for NH Alerts (ReadyNH.gov or the Genasys Protect app)'],
-  ['noaa','Write your NOAA radio frequency on your card'],
+  ['noaa','Write down your NOAA radio frequency (it prints on your wallet card)'],
   ['code','Agree on a family code word for calls asking for money or help',{note:'Say it out loud. Never type it into this app or a text.'}],
   ['five','Write 5 important phone numbers on paper'],
   ['medlist','Write your medicines, doses and pharmacy on paper',{when:'meds'}],
@@ -510,7 +516,7 @@ const HOME=[
   ['cotest','Test the CO detector and its battery'],
   ['meet','Pick a meeting place and an out-of-area contact person'],
   ['assist','Check whether you qualify for Fuel or Electric Assistance (call 211)'],
-  ['printed','Print the emergency card for the fridge and the kit']
+  ['printed','Print the full info page for the fridge and a wallet card for each person']
  ]}
 ];
 const COUNTIES={
@@ -694,11 +700,11 @@ function renderPaper(){
     const who=k=>[F[k+'Name'],F[k]].filter(Boolean).join(' · ');
     const shared=dl([['Electric outage',who('utility')],['Family',who('family')],['Family',who('family2')],['Family',who('family3')],['Family',who('family4')],['Out-of-area',who('outside')],['Neighbor',who('neighbor')],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
     const co=COUNTIES[S.home.county];
-    $('#paper').innerHTML=list.map(p=>{const m=S.med[p.id]||{};return `<div class="pcard"><h3>${esc(p.name||'Emergency card')}</h3>
+    $('#paper').innerHTML=list.map(p=>{const m=S.med[p.id]||{};return `<div class="pcard wallet"><p class="note" style="margin:0;text-transform:uppercase;letter-spacing:.06em;font-size:11px">Wallet card</p><h3>${esc(p.name||'Wallet card')}</h3>
       <p class="big" style="margin:2px 0 6px">911 for danger · 211 for warming centers and help</p>
       <div class="two"><div>${shared}${co?'<dl>'+co.caa.map(([n,ph])=>`<dt>Fuel help</dt><dd>${esc(ph)} (${esc(n)})</dd>`).join('')+'</dl>':''}</div>
       <div><ul><li>CO alarm: everyone outside, call 911.</li><li>Generator 20+ ft from the house. Never indoors.</li><li>Fridge 4 hrs, full freezer 48 hrs.</li><li>Bad water: boil 1 min, or 8 drops bleach per gallon, wait 30 min.</li><li>Money request? Hang up, call back, ask for the code word.</li></ul></div></div>
-      ${med?dl([['Medicines',m.meds],['Allergies',m.allergy],['Pharmacy',m.pharm],['Doctor',m.doc]]):''}</div>`;}).join('')+'<p class="note">Code word: not printed on purpose. Keep it in your head.</p>';
+      ${med?dl([['Medicines',m.meds],['Allergies',m.allergy],['Pharmacy',m.pharm],['Doctor',m.doc]]):''}</div>`;}).join('')+'<p class="note">Cut out each card along the dashed line and fold it in half to fit a wallet. Code word: not printed on purpose. Keep it in your head.</p>';
   }else{
     let html='';
     list.forEach(p=>{const st=personStore(p);const rows=[];PERSON.forEach(g=>g.items.forEach(([id,l,o])=>{if(!applies(o,p))return;const v=st[id],f=frac(o,v);if(f>=1||(o&&o.opt))return;
