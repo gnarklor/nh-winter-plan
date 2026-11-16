@@ -360,6 +360,8 @@ const ORIGINAL_HTML = '<!doctype html>\n' + document.documentElement.outerHTML;
 (function(){
 'use strict';
 const KEY='nh-winter-plan-v1';
+const PREVIEW=false;
+const LS=(function(){try{return window.localStorage;}catch(e){return null;}})();
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Math.random().toString(36).slice(2,9);
@@ -461,14 +463,15 @@ let S;
 function fresh(){return {v:1,people:[{id:uid(),name:'Me',driver:true,meds:false}],home:{county:'',station:'',well:'well',review:''},items:{},homeItems:{},fields:{},med:{},active:null,onlyMissing:false};}
 let storageOK=true;
 function load(){
-  try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){storageOK=false;S=fresh();}
+  try{if(!LS)throw 0;const raw=LS.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){storageOK=false;S=fresh();}
   if(!S.people||!S.people.length)S.people=fresh().people;
   S.items=S.items||{};S.homeItems=S.homeItems||{};S.fields=S.fields||{};S.med=S.med||{};S.home=Object.assign(fresh().home,S.home||{});
   if(!S.people.find(p=>p.id===S.active))S.active=S.people[0].id;
-  try{localStorage.setItem(KEY+'-t','1');localStorage.removeItem(KEY+'-t');}catch(e){storageOK=false;}
+  try{LS.setItem(KEY+'-t','1');LS.removeItem(KEY+'-t');}catch(e){storageOK=false;}
   $('#storageWarn').hidden=storageOK;
+  if(PREVIEW){$('#storageWarn').textContent='Preview version: progress resets when you close this page. To save progress, use the full app file (nh-winter-plan.html) or download a plan backup under Print & save.';$('#offlineBtn').hidden=true;}
 }
-function save(){if(!storageOK)return;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){storageOK=false;$('#storageWarn').hidden=false;}}
+function save(){if(!storageOK)return;try{LS.setItem(KEY,JSON.stringify(S));}catch(e){storageOK=false;$('#storageWarn').hidden=false;}}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600);}
 
 function applies(o,p){if(!o||!o.when)return true;if(o.when==='driver')return !!p.driver;if(o.when==='meds')return !!p.meds;if(o.when==='well')return S.home.well==='well';return true;}
