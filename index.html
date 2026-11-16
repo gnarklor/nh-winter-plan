@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NH Winter Emergency Plan</title>
+<meta name="description" content="A per-person winter emergency checklist for rural New Hampshire households. Works offline; data stays on this device.">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@500,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f1e8; --card:#fffdf8; --ink:#1d2621; --muted:#56635b; --line:#d9d2c3;
+  --spruce:#24533f; --spruce-2:#e3ece6; --red:#a8361a; --red-2:#f7e4dc; --amber:#8a5a00; --amber-2:#f6ead0;
+  --r-sm:4px; --r-md:8px; --r-lg:14px;
+  --display:'Zodiak','Iowan Old Style',Georgia,serif;
+  --body:'General Sans','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--body)}
+a{color:var(--spruce);text-underline-offset:2px}
+:focus-visible{outline:3px solid #d08a00;outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px}
+.skip:focus{left:8px;z-index:9}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+header.top{background:var(--spruce);color:#f5f1e8;padding:22px 0 18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{flex:none}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:2px 0 6px}
+.lede{margin:0 0 14px;max-width:60ch;opacity:.92}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border-radius:var(--r-md);border:1.5px solid var(--spruce);background:var(--card);color:var(--spruce);font:600 15px var(--body);cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--spruce-2)}
+.btn.solid{background:var(--spruce);color:#fff}
+.btn.solid:hover{background:#1b4232}
+.btn.alarm{background:var(--red);border-color:var(--red);color:#fff}
+.btn.alarm:hover{background:#8b2b13}
+.btn.ghost-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.btn.ghost-light:hover{background:rgba(255,255,255,.1)}
+.btn.small{min-height:36px;padding:6px 12px;font-size:14px}
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs button{flex:none;min-height:48px;padding:0 14px;border:0;border-bottom:3px solid transparent;background:none;font:600 15px var(--body);color:var(--muted);cursor:pointer}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--spruce)}
+nav.tabs button.em[aria-selected="true"]{border-bottom-color:var(--red)}
+main{padding:22px 0 60px}
+section.view[hidden]{display:none}
+h2{font-family:var(--display);font-size:26px;line-height:1.2;margin:0 0 6px}
+h3{font-size:17px;margin:0}
+.sub{color:var(--muted);margin:0 0 18px;max-width:66ch}
+.banner{border:1px solid #e0c48a;background:var(--amber-2);color:#4d3600;border-radius:var(--r-md);padding:10px 14px;margin:0 0 16px;font-size:15px}
+.people{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chip{min-height:44px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font:600 15px var(--body);color:var(--ink);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chip small{font-weight:500;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--spruce);background:var(--spruce);color:#fff}
+.chip[aria-pressed="true"] small{color:#d6e6dc}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px}
+.stat b{display:block;font-family:var(--display);font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--spruce);width:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:0 0 12px}
+.check-inline{display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-weight:500}
+.check-inline input{width:20px;height:20px;accent-color:var(--spruce)}
+details.group{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);margin:0 0 10px}
+details.group>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;min-height:52px}
+details.group>summary::-webkit-details-marker{display:none}
+details.group>summary::before{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none}
+details.group[open]>summary::before{transform:rotate(45deg)}
+.count{margin-left:auto;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.count.done{color:var(--spruce);font-weight:600}
+.items{border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:28px 1fr auto;gap:4px 12px;align-items:start;padding:12px 14px;border-bottom:1px solid #ece6d9}
+.item:last-child{border-bottom:0}
+.item.qty{grid-template-columns:1fr auto}
+.item input[type=checkbox]{width:22px;height:22px;margin:2px 0 0;accent-color:var(--spruce);cursor:pointer}
+.item label{cursor:pointer;font-weight:500}
+.item .meta{grid-column:2/4;font-size:14px;color:var(--muted)}
+.item.qty .meta{grid-column:1/3}
+.item.done label{color:var(--muted);text-decoration:line-through;text-decoration-color:#a9b1aa}
+.cost{font-size:14px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.qtybox{display:flex;align-items:center;gap:6px}
+.qtybox input{width:76px;min-height:44px;padding:6px 8px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:600 16px var(--body);text-align:right;background:#fff;font-variant-numeric:tabular-nums}
+.qtybox span{font-size:14px;color:var(--muted)}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--spruce-2);color:var(--spruce);margin-left:6px;vertical-align:1px}
+.tag.opt{background:#ece6d9;color:var(--muted)}
+.whylink{font-size:14px;margin-left:8px}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:26px 0 8px;flex-wrap:wrap}
+.empty{padding:14px;color:var(--muted)}
+form.grid,.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 16px}
+.field label{display:block;font-weight:600;font-size:15px;margin:0 0 4px}
+.field .hint{font-size:13px;color:var(--muted);margin:2px 0 0}
+.field input,.field select,.field textarea{width:100%;min-height:44px;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:16px var(--body);background:#fff;color:var(--ink)}
+.field textarea{min-height:70px;resize:vertical}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin:0 0 16px}
+.panel h3{margin:0 0 12px;font-family:var(--display);font-size:20px}
+.person-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px 14px;align-items:center;padding:8px 0;border-bottom:1px solid #ece6d9}
+.person-row:last-of-type{border-bottom:0}
+.person-row input[type=text]{min-height:44px;padding:8px 10px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:16px var(--body);width:100%}
+.iconbtn{min-width:44px;min-height:44px;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-sm);cursor:pointer;color:var(--red);font:600 14px var(--body)}
+.callgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 18px}
+.call{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-md);padding:12px 14px;min-height:64px}
+.call b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.call span{font-size:14px;color:var(--muted)}
+.call.red{background:var(--red);border-color:var(--red);color:#fff}
+.call.red span{color:#ffe1d6}
+.call.missing{border-style:dashed}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:0}
+ol.steps>li{counter-increment:s;position:relative;padding:14px 14px 14px 56px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);margin:0 0 8px}
+ol.steps>li::before{content:counter(s);position:absolute;left:14px;top:13px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:600;display:grid;place-items:center;font-size:15px}
+ol.steps>li.warn{border-color:#e5b4a3;background:var(--red-2)}
+ol.steps>li.warn::before{background:var(--red)}
+ol.steps h3{margin:0 0 4px}
+ol.steps p,ol.steps ul{margin:4px 0 0}
+ol.steps ul{padding-left:18px}
+.why h3{font-family:var(--display);font-size:21px;margin:0 0 6px}
+.why article{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;margin:0 0 12px;scroll-margin-top:64px}
+.why article p{margin:6px 0;max-width:72ch}
+.why article ul{margin:6px 0;padding-left:20px;max-width:72ch}
+.why .src{font-size:14px;color:var(--muted)}
+.dated{border-left:4px solid var(--amber);}
+table.t{width:100%;border-collapse:collapse;font-size:15px}
+table.t th,table.t td{text-align:left;padding:7px 8px;border-bottom:1px solid #ece6d9;vertical-align:top}
+table.t td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.printopts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 12px}
+.printopts select{min-height:44px;padding:6px 10px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:16px var(--body);background:#fff}
+#paper{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:20px;color:#000}
+.pcard{break-inside:avoid;page-break-inside:avoid;border:2px solid #000;border-radius:6px;padding:14px 16px;margin:0 0 14px}
+.pcard h3{font-family:var(--display);font-size:20px;margin:0 0 2px}
+.pcard .two{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px}
+.pcard dl{margin:6px 0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:14px}
+.pcard dt{font-weight:600}
+.pcard dd{margin:0}
+.pcard ul{margin:4px 0;padding-left:18px;font-size:14px}
+.pcard .big{font-size:18px;font-weight:700}
+.note{font-size:14px;color:var(--muted)}
+dialog{border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;max-width:420px;background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(20,30,25,.45)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r-md);font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
+.toast.show{opacity:1}
+footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color:var(--muted)}
+@media (max-width:600px){
+  .person-row{grid-template-columns:1fr auto;}
+  .person-row .name{grid-column:1/3}
+  .pcard .two{grid-template-columns:1fr}
+  .item{grid-template-columns:28px 1fr}
+  .item .cost{grid-column:2}
+  .item .meta{grid-column:2}
+  .item.qty{grid-template-columns:1fr}
+  .item.qty .meta{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff}
+  header.top,nav.tabs,footer,.noprint,.toast,section.view:not(#v-print){display:none!important}
+  section#v-print{display:block!important}
+  #v-print>*:not(#paper){display:none!important}
+  main{padding:0}
+  #paper{border:0;padding:0}
+  .wrap{max-width:none;padding:0}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L31 20 H25 L33 31 H7 L15 20 H9 Z" fill="none" stroke="#f5f1e8" stroke-width="2.2" stroke-linejoin="round"/><path d="M20 31 V36" stroke="#f5f1e8" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <p class="eyebrow">Rural New Hampshire · Winter</p>
+    </div>
+    <h1>Our winter emergency plan</h1>
+    <p class="lede">Two weeks without power, water or phone lines, planned one person at a time. Everything you enter stays on this device.</p>
+    <div class="hero-actions">
+      <button class="btn alarm" type="button" data-go="emergency">Power's out: open emergency steps</button>
+      <button class="btn ghost-light" type="button" data-go="home">Set up our household</button>
+    </div>
+  </div>
+</header>
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="list" aria-selected="true">Checklist</button>
+    <button role="tab" data-tab="home" aria-selected="false">Our household</button>
+    <button role="tab" data-tab="emergency" class="em" aria-selected="false">Emergency</button>
+    <button role="tab" data-tab="why" aria-selected="false">Why it matters</button>
+    <button role="tab" data-tab="print" aria-selected="false">Print &amp; save</button>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+  <div id="storageWarn" class="banner" hidden>This browser is blocking storage, so your progress will disappear when you close it. Use "Print &amp; save" to download a backup file.</div>
+
+  <!-- CHECKLIST -->
+  <section class="view" id="v-list" aria-labelledby="h-list">
+    <h2 id="h-list">Checklist</h2>
+    <p class="sub">Pick a person. Each person works toward the same two-week target. Shared items, like the radio and CO detector, are counted once for the whole home.</p>
+    <div class="people" id="peopleChips" role="group" aria-label="Choose a person"></div>
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <label class="check-inline"><input type="checkbox" id="onlyMissing"> Show only what's still needed</label>
+      <span class="note" id="costNote"></span>
+    </div>
+    <div id="personGroups"></div>
+    <div class="section-h"><h2 style="font-size:22px">Shared by the household</h2><span class="note" id="homeShare"></span></div>
+    <div id="homeGroups"></div>
+  </section>
+
+  <!-- HOUSEHOLD -->
+  <section class="view" id="v-home" aria-labelledby="h-home" hidden>
+    <h2 id="h-home">Our household</h2>
+    <p class="sub">Add everyone who lives here. Check "Drives" for anyone who needs a car kit, and "Takes medicine" for anyone who needs a refill buffer.</p>
+    <div class="panel">
+      <h3>People</h3>
+      <div id="peopleList"></div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn" type="button" id="addPerson">Add a person</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Our home</h3>
+      <div class="grid">
+        <div class="field"><label for="county">County</label>
+          <select id="county"><option value="">Choose…</option></select>
+          <p class="hint">Sets your Community Action Agency number and a radio station to try first.</p></div>
+        <div class="field"><label for="station">NOAA weather radio station</label>
+          <select id="station"></select>
+          <p class="hint">Test it now. Pick whichever comes in clearest at your house.</p></div>
+        <div class="field"><label for="well">Water comes from</label>
+          <select id="well"><option value="well">A private well (no power = no water)</option><option value="town">Town water</option></select></div>
+        <div class="field"><label for="review">Last time we checked our supplies</label>
+          <input type="date" id="review"><p class="hint">Swap stored water every 6 months.</p></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Phone numbers and places</h3>
+      <div class="grid" id="homeFields"></div>
+    </div>
+    <div class="panel">
+      <h3>Medical notes (private)</h3>
+      <p class="note" style="margin-top:-6px">Only printed when you turn on "Include medical details." Never type your family code word anywhere in this app.</p>
+      <div id="medFields"></div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY -->
+  <section class="view" id="v-emergency" aria-labelledby="h-em" hidden>
+    <h2 id="h-em">Emergency steps</h2>
+    <p class="sub">Work down the list. If anyone is in danger, call 911 first.</p>
+    <div class="callgrid" id="callgrid"></div>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <!-- WHY -->
+  <section class="view why" id="v-why" aria-labelledby="h-why" hidden>
+    <h2 id="h-why">Why it matters</h2>
+    <p class="sub">The reasons behind each part of the checklist, with links to the original sources.</p>
+    <article id="why-winter"><h3>Winter is the main risk</h3>
+      <p>The 2008 ice storm cut power to about 440,000 New Hampshire customers, some for nearly two weeks. That's why the target is two weeks, not three days. <span class="src">(<a href="https://www.wmur.com/article/new-hampshire-ice-storm-2008-archive-video/69697906" target="_blank" rel="noopener">WMUR</a>)</span></p>
+      <p>Ready.gov's winter guide covers heating, driving and staying warm when the power goes out. <span class="src">(<a href="https://www.ready.gov/winter-ready" target="_blank" rel="noopener">Ready.gov Winter</a>, <a href="https://www.ready.gov/kit" target="_blank" rel="noopener">Ready.gov basic kit</a>)</span></p>
+    </article>
+    <article id="why-water"><h3>Water</h3>
+      <p>The CDC recommends 1 gallon per person per day: 14 gallons for two weeks. If that isn't possible yet, 3 gallons is the minimum. Replace stored water every 6 months. <span class="src">(<a href="https://www.cdc.gov/water-emergency/about/how-to-create-and-store-an-emergency-water-supply.html" target="_blank" rel="noopener">CDC water storage</a>)</span></p>
+      <p>A private well needs electricity for its pump, so a power outage also means no running water. Many homes in towns like Antrim are on private wells. <span class="src">(<a href="https://www.neha.org/Images/resources/Power%20Outage%20Facts.pdf" target="_blank" rel="noopener">NEHA well facts</a>, <a href="https://www.antrimnh.org/planning/files/community-facilities" target="_blank" rel="noopener">Town of Antrim</a>)</span></p>
+      <p>If you're unsure about water, boil it for 1 minute or add 8 drops of plain unscented bleach (5–9% sodium hypochlorite) per gallon. Double the bleach if the water is cloudy or very cold, then wait 30 minutes. Boiling and bleach won't remove fuel or chemicals. <span class="src">(<a href="https://www.cdc.gov/water-emergency/about/index.html" target="_blank" rel="noopener">CDC emergency water</a>)</span></p>
+      <p>Why there are no rain barrels: they freeze in a NH winter, and roof runoff can carry germs and chemicals. <span class="src">(<a href="https://www.cdc.gov/drinking-water/about/collecting-rainwater-and-your-health-an-overview.html" target="_blank" rel="noopener">CDC rainwater</a>)</span></p>
+    </article>
+    <article id="why-food"><h3>Food</h3>
+      <p>A fridge keeps food safe for about 4 hours without power. A full freezer lasts about 48 hours, or 24 if it's half full. After that, you'll need food that doesn't need cooking or a fridge: about 14 cans of protein, 14 cans of fruit or vegetables, peanut butter and breakfast items per person. That costs roughly $45–75 per person, and you can spread it out over several grocery trips. <span class="src">(<a href="https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-during-a-power-outage.html" target="_blank" rel="noopener">CDC power outage</a>)</span></p>
+    </article>
+    <article id="why-warmth"><h3>Warmth, light and power</h3>
+      <p>The cheapest heat is what you're wearing. Gather everyone into one room, wear layers and use blankets. Headlamps are safer than candles. A charged power bank keeps a phone working for alerts and calls.</p>
+      <p>Carbon monoxide (CO) has no smell and kills people every winter during outages. Never use a generator, grill, camp stove or gas oven to heat indoors. Generators must be at least 20 feet from windows, doors and vents. <span class="src">(<a href="https://www.dhhs.nh.gov/programs-services/environmental-health-and-you/environmental-public-health-tracking/tracking-carbon" target="_blank" rel="noopener">NH DHHS on CO</a>, <a href="https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-during-a-power-outage.html" target="_blank" rel="noopener">CDC</a>)</span></p>
+      <p>Plugging a generator into a wall outlet without a transfer switch sends power back into the lines, which can kill line workers. <span class="src">(<a href="https://www.newbostonnh.gov/sites/g/files/vyhlif4756/f/uploads/safety_bulletin_on_emergency_generator_use.pdf" target="_blank" rel="noopener">NH Fire Marshal bulletin</a>)</span></p>
+    </article>
+    <article id="why-health"><h3>Medicine and papers</h3>
+      <p>In 2024, a ransomware attack on Change Healthcare delayed prescriptions at pharmacies across the US. Keeping at least 7 extra days of medicine on hand and a paper medication list means a computer outage doesn't become a medical emergency. <span class="src">(<a href="https://techcrunch.com/2024/02/26/ransomware-attack-change-healthcare-prescription-pharmacy-outages/" target="_blank" rel="noopener">TechCrunch</a>)</span></p>
+      <p>Medicine that needs refrigeration should generally be replaced after a day or more without power. If a medicine is life-sustaining, keep using it until you can get a replacement. <span class="src">(<a href="https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-during-a-power-outage.html" target="_blank" rel="noopener">CDC</a>)</span></p>
+      <p>Card readers and ATMs stop working when the power or network is down, so keep $40–100 in small bills if you can.</p>
+    </article>
+    <article id="why-cyber"><h3>Cyber attacks: what's actually at risk</h3>
+      <ul>
+        <li>Iran: after the war that began in February 2026, Iran-linked hackers went after control equipment used by US water utilities and other infrastructure. In July, more than 100 US water systems were targeted, and one Georgia town issued a boil-water advisory. <span class="src">(<a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a" target="_blank" rel="noopener">CISA AA26-097A</a>, <a href="https://techcrunch.com/2026/08/26/cisa-confirms-hackers-targeted-over-100-us-water-systems-during-july/" target="_blank" rel="noopener">TechCrunch</a>, <a href="https://www.cbsnews.com/news/us-water-systems-cyberattacks-iran-security-gaps/" target="_blank" rel="noopener">CBS News</a>, <a href="https://www.csis.org/analysis/how-tehrans-use-cyber-operations-us-iran-conflict-has-evolved" target="_blank" rel="noopener">CSIS</a>)</span></li>
+        <li>Russia: pro-Russia hackers caused a water tank in Texas to overflow, and another attack cut water to about 450 homes in Denmark. <span class="src">(<a href="https://www.govinfosecurity.com/us-warns-ongoing-pro-russia-critical-infrastructure-hacks-a-30263" target="_blank" rel="noopener">GovInfoSecurity</a>, <a href="https://meduza.io/en/feature/2026/10/28/russia-linked-hackers-are-exploiting-poorly-secured-industrial-systems-to-sabotage-factories-utilities-and-food-production-across-the-west-bloomberg-reports" target="_blank" rel="noopener">Meduza/Bloomberg</a>)</span></li>
+        <li>China: the Volt Typhoon group spent about 300 days inside a small Massachusetts utility's network, just over the NH border. <span class="src">(<a href="https://www.securityweek.com/chinas-volt-typhoon-hackers-dwelled-in-us-electric-grid-for-300-days" target="_blank" rel="noopener">SecurityWeek</a>)</span></li>
+        <li>North Korea mostly steals money, especially cryptocurrency. For families, that shows up as scams, fake job offers and phishing. <span class="src">(<a href="https://www.bleepingcomputer.com/tag/north-korea/" target="_blank" rel="noopener">BleepingComputer</a>)</span></li>
+        <li>Phones: after hackers broke into US phone carriers, the FBI advised using encrypted messaging apps. The FBI also warns that criminals use AI to fake a relative's voice, which is why a family code word helps. <span class="src">(<a href="https://www.capeandislands.org/2024-12-17/fbi-warns-americans-to-keep-their-text-messages-secure-what-to-know" target="_blank" rel="noopener">CAI/NPR</a>, <a href="https://www.ic3.gov/psa/2024/PSA241203" target="_blank" rel="noopener">FBI IC3</a>)</span></li>
+      </ul>
+      <p>What helps at home is the same four habits CISA recommends: strong passwords, multifactor authentication, software updates and recognizing phishing. <span class="src">(<a href="https://www.cisa.gov/secure-our-world/secure-yourself-your-family" target="_blank" rel="noopener">CISA Secure Our World</a>)</span></p>
+    </article>
+    <article id="why-local" class="dated"><h3>What people are saying locally (checked Nov 16, 2026)</h3>
+      <p class="note">This section goes out of date. Check the links for the latest.</p>
+      <ul>
+        <li>"Store 90 days of water" (Antrim town meeting): unconfirmed. We found no record of it from the town. The 90-day figure appears in reporting about the Pentagon's FORTRESS program, which is about military bases, not households. A two-week supply is still the right goal for families. <span class="src">(<a href="https://www.antrimnh.org/antrim-community" target="_blank" rel="noopener">Town of Antrim</a>, <a href="https://www.foxnews.com/politics/inside-pentagons-doomsday-plan-keep-america-fighting-global-war-erupts" target="_blank" rel="noopener">Fox News</a>, <a href="https://media.defense.gov/2026/Sep/30/2004009303/-1/-1/1/ESTABLISHMENT-OF-FORTRESS-AMERICA-AS-A-DEPARTMENT-OF-WAR-PROGRAM-FOR-THE-DEFENSE-OF-THE-AMERICAN-HOMELAND.PDF" target="_blank" rel="noopener">DoD memo</a>) You can call the Antrim town office at <a href="tel:+16035886785">(603) 588-6785</a> to ask.</li>
+        <li>Monadnock Community Hospital: a server outage began Nov. 9 and also affects the Antrim and Jaffrey offices. Phones came back on Sunday. The hospital expects some services to stay limited through Nov. 18 and hasn't said whether it was a hack. The ER is open, but ambulances are being sent elsewhere. Main line: <a href="tel:+16039247191">603-924-7191</a>. <span class="src">(<a href="https://www.wmur.com/article/monadnock-community-hospital-says-phones-have-been-restored/74434843" target="_blank" rel="noopener">WMUR</a>, <a href="https://monadnockcommunityhospital.com/" target="_blank" rel="noopener">MCH updates</a>, <a href="https://dysruptionhub.com/monadnock-community-hospital-suspected-cyber-incident/" target="_blank" rel="noopener">DysruptionHub</a>)</span></li>
+        <li>Outlook and Microsoft 365 outage (Nov. 12): Microsoft blamed overloaded systems and an unexpected spike in traffic. It didn't mention an attack. <span class="src">(<a href="https://deadline.com/2026/11/microsoft-outlook-is-down-email-365-1237221945/" target="_blank" rel="noopener">Deadline</a>)</span></li>
+      </ul>
+      <p>What these have in common: computer systems fail, whatever the cause. Paper lists, cash and a few days of supplies cover you either way.</p>
+    </article>
+    <article id="why-help"><h3>Help paying for it</h3>
+      <ul>
+        <li>Fuel Assistance: grants of $188–$2,500 for heating fuel. Apply through your Community Action Agency or call 211. <span class="src">(<a href="https://www.energy.nh.gov/fap" target="_blank" rel="noopener">NH Dept. of Energy</a>)</span></li>
+        <li>Electric Assistance Program: a 5–86% discount on electric bills for Eversource, Unitil, Liberty and NHEC customers. <span class="src">(<a href="https://www.energy.nh.gov/eap" target="_blank" rel="noopener">NH EAP</a>)</span></li>
+        <li>Community Action Agency phone numbers for every county. <span class="src">(<a href="https://www.energy.nh.gov/consumers/help-energy-and-utility-bills/community-action-agencies" target="_blank" rel="noopener">NH Dept. of Energy list</a>)</span></li>
+        <li>NH Alerts sign-up, through the Genasys Protect app. <span class="src">(<a href="https://www.readynh.gov/" target="_blank" rel="noopener">ReadyNH</a>)</span></li>
+        <li>NOAA weather radio stations in NH. <span class="src">(<a href="https://www.weather.gov/nwr/stations?State=NH" target="_blank" rel="noopener">weather.gov</a>)</span></li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- PRINT & SAVE -->
+  <section class="view" id="v-print" aria-labelledby="h-print" hidden>
+    <h2 id="h-print">Print &amp; save</h2>
+    <p class="sub">Phones die and Wi-Fi goes down, so print a card for the fridge and one for each kit. You can also save the whole app to a phone or a USB stick.</p>
+    <div class="panel noprint">
+      <h3>Printable pages</h3>
+      <div class="printopts">
+        <label for="printWhat" class="sr">Print</label>
+        <select id="printWhat">
+          <option value="card">Emergency card</option>
+          <option value="shop">Shopping list (what's still needed)</option>
+        </select>
+        <select id="printWho" aria-label="Who"></select>
+        <label class="check-inline"><input type="checkbox" id="printMed"> Include medical details</label>
+        <button class="btn solid" type="button" id="printBtn">Print</button>
+      </div>
+      <p class="note" id="printNote">If the print window doesn't open, open this app in its own browser tab and choose Print from the browser menu.</p>
+    </div>
+    <div id="paper" aria-label="Print preview"></div>
+    <div class="panel noprint" style="margin-top:16px">
+      <h3>Save a copy</h3>
+      <p class="note" style="margin-top:-6px">Your progress is saved in this browser. To move it to another device, or keep a backup, download a plan file.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="btn" type="button" id="exportBtn">Download plan backup</button>
+        <label class="btn" for="importFile" style="cursor:pointer">Load a plan backup</label>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+        <button class="btn" type="button" id="offlineBtn">Download offline copy of this app</button>
+        <button class="btn" type="button" id="resetBtn" style="color:var(--red);border-color:var(--red)">Start over</button>
+      </div>
+      <ul class="note" style="margin:12px 0 0;padding-left:18px">
+        <li>The offline copy is a single file. Open it in any browser, even with no internet. Share it with family by text, email or USB stick.</li>
+        <li>Each person can keep their own copy on their phone and use the "Show only what's still needed" filter as a shopping list.</li>
+        <li>Save a photo of the printed card on your phone too.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">Built from CDC, Ready.gov, NH Dept. of Energy, NH DHHS and CISA guidance. Costs are rough estimates for 2026. This is not a substitute for official alerts.</div>
+</footer>
+<dialog id="confirmDlg">
+  <h3 style="font-family:var(--display);font-size:20px;margin:0 0 8px">Start over?</h3>
+  <p style="margin:0 0 16px">This clears everyone's progress and notes on this device. Download a backup first if you might want them later.</p>
+  <div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn" type="button" id="cancelReset">Cancel</button><button class="btn alarm" type="button" id="doReset">Clear everything</button></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const ORIGINAL_HTML = '<!doctype html>\n' + document.documentElement.outerHTML;
+(function(){
+'use strict';
+const KEY='nh-winter-plan-v1';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9);
+
+// [id, label, opts] opts: {q:target,unit,step, c:[lo,hi], when:'driver'|'meds', opt:true, note}
+const PERSON=[
+ {id:'free',title:'Free steps',why:'why-cyber',items:[
+  ['alerts','Sign up for NH Alerts (ReadyNH.gov or the Genasys Protect app)'],
+  ['noaa','Write your NOAA radio frequency on your card'],
+  ['code','Agree on a family code word for calls asking for money or help',{note:'Say it out loud. Never type it into this app or a text.'}],
+  ['five','Write 5 important phone numbers on paper'],
+  ['medlist','Write your medicines, doses and pharmacy on paper',{when:'meds'}],
+  ['updates','Turn on automatic phone updates and use an authenticator app for important accounts'],
+  ['medid','Set up Medical ID or emergency contacts on your phone lock screen'],
+  ['maps','Download offline maps of your area'],
+  ['spot','Keep a hat, gloves and wool socks where you can find them in the dark'],
+  ['tank','Keep the gas tank at least half full in winter',{when:'driver'}]
+ ]},
+ {id:'water',title:'Water',why:'why-water',items:[
+  ['water','Drinking and cooking water',{q:14,unit:'gal',step:0.5,c:[0,30],note:'1 gallon a day for 14 days. Refilled soda bottles are free. 3 gallons is the bare minimum.'}],
+  ['tabs','Water purification tablets',{opt:true,c:[12,18],note:'Optional backup if you run out of bleach.'}]
+ ]},
+ {id:'food',title:'Food for 14 days',why:'why-food',items:[
+  ['protein','Canned protein (tuna, chicken, beans, chili, soup)',{q:14,unit:'cans',step:1,c:[15,25]}],
+  ['produce','Canned fruit or vegetables',{q:14,unit:'cans',step:1,c:[10,15]}],
+  ['pb','Peanut butter or another spread, plus crackers',{q:1,unit:'jar',step:1,c:[6,10]}],
+  ['breakfast','About 14 breakfasts: oats, cereal or granola bars',{c:[6,10]}],
+  ['milk','Shelf-stable milk, coffee or tea',{c:[5,10]}],
+  ['comfort','A few comfort foods or treats',{c:[3,5],note:'Helps a lot on day 5 in the dark, especially for kids.'}]
+ ]},
+ {id:'warm',title:'Warmth',why:'why-warmth',items:[
+  ['sleep','Sleeping bag or 2 heavy blankets',{c:[0,30],note:'Use what you already have first.'}],
+  ['clothes','Hat, gloves, 2 pairs of wool socks and a warm layer',{c:[0,28]}],
+  ['mylar','Mylar emergency blankets',{q:2,unit:'',step:1,c:[3,4]}]
+ ]},
+ {id:'light',title:'Light and power',why:'why-warmth',items:[
+  ['headlamp','Headlamp',{q:1,unit:'',step:1,c:[9,13]}],
+  ['batt','Spare batteries for the headlamp',{c:[5,10]}],
+  ['bank','Power bank, about 10,000 mAh, kept charged',{q:1,unit:'',step:1,c:[13,20]}],
+  ['cable','Charging cable that fits your phone',{c:[0,10]}]
+ ]},
+ {id:'health',title:'Health',why:'why-health',items:[
+  ['rx','Extra days of prescription medicine',{q:7,unit:'days',step:1,when:'meds',note:'Ask your pharmacist or doctor about refilling a little early.'}],
+  ['aids','Spare glasses, hearing-aid batteries or medical-device backup',{note:'Skip if it doesn\u2019t apply to you.'}],
+  ['hyg','Toilet paper, wipes, hand sanitizer and personal items',{c:[5,15]}]
+ ]},
+ {id:'money',title:'Cash and papers',why:'why-health',items:[
+  ['cash','$40–100 in small bills, if you can',{note:'Not a cost. It\u2019s savings you can reach when card readers are down.'}],
+  ['docs','Copies of ID, insurance cards and prescriptions in a zip-top bag',{c:[0,2]}]
+ ]},
+ {id:'car',title:'Car kit',why:'why-winter',items:[
+  ['carkit','Car kit: blanket, scraper, small shovel, sand or kitty litter, snacks, water',{c:[0,25],when:'driver'}]
+ ]}
+];
+const HOME=[
+ {id:'h-gear',title:'Shared gear (one per home)',why:'why-warmth',items:[
+  ['co','Battery carbon monoxide (CO) detector near bedrooms',{c:[22,27]}],
+  ['radio','AM/FM/NOAA weather radio, hand-crank or battery',{c:[16,60]}],
+  ['bleach','Plain unscented bleach, 5–9% sodium hypochlorite',{c:[4,6]}],
+  ['opener','Manual can opener',{c:[3,10]}],
+  ['warmers','Hand warmers, about 40 pairs',{c:[14,17]}],
+  ['otc','Pain reliever, antacid, anti-diarrhea medicine and bandages',{c:[10,20]}],
+  ['buckets','Buckets for toilet-flushing water (fill the tub before a storm)',{c:[3,10]}]
+ ]},
+ {id:'h-free',title:'Free household steps',why:'why-help',items:[
+  ['breaker','Find and label the well pump breaker',{when:'well'}],
+  ['cotest','Test the CO detector and its battery'],
+  ['meet','Pick a meeting place and an out-of-area contact person'],
+  ['assist','Check whether you qualify for Fuel or Electric Assistance (call 211)'],
+  ['printed','Print the emergency card for the fridge and the kit']
+ ]}
+];
+const COUNTIES={
+ 'Belknap':{st:'Holderness',caa:[['CAP Belknap-Merrimack','(603) 223-0043']]},
+ 'Carroll':{st:'Mt. Washington',caa:[['Tri-County CAP, Carroll','(603) 323-7400']]},
+ 'Cheshire':{st:'Pack Monadnock',caa:[['Southwestern Community Services, Keene','(603) 352-7512']]},
+ 'Coos':{st:'Clarksville',caa:[['Tri-County CAP, Coos','(603) 752-3248']]},
+ 'Grafton':{st:'Hanover',caa:[['Tri-County CAP, Grafton','(603) 968-3560']]},
+ 'Hillsborough':{st:'Pack Monadnock',caa:[['CAPHR, Peterborough office','(603) 924-2243'],['CAPHR, Manchester office','(603) 647-4470']]},
+ 'Merrimack':{st:'Concord',caa:[['CAP Belknap-Merrimack','(603) 223-0043']]},
+ 'Rockingham':{st:'Deerfield',caa:[['CAPHR (Rockingham)','1-877-757-7048']]},
+ 'Strafford':{st:'Deerfield',caa:[['Strafford CAP','(603) 435-2500']]},
+ 'Sullivan':{st:'Hanover',caa:[['Southwestern Community Services, Claremont','(603) 542-9528']]}
+};
+const STATIONS=[['Pack Monadnock','162.525'],['Concord','162.400'],['Deerfield','162.450'],['Holderness','162.550'],['Hanover','162.525'],['Mt. Washington','162.500'],['Clarksville','162.400']];
+const HFIELDS=[
+ ['utility','Electric company outage line','tel','It\u2019s printed on your electric bill'],
+ ['family','Family contact','tel',''],
+ ['outside','Out-of-area contact','tel','Someone far away is often easier to reach'],
+ ['neighbor','Neighbor','tel',''],
+ ['meet','Meeting place','text','If we can\u2019t stay home or get separated'],
+ ['er','Backup ER / hospital','text','Where to go if the closest ER is on diversion'],
+ ['waterspot','Where the water is stored','text',''],
+ ['kitspot','Where the kit is','text',''],
+ ['breakerspot','Where the well pump breaker is','text','']
+];
+
+let S;
+function fresh(){return {v:1,people:[{id:uid(),name:'Me',driver:true,meds:false}],home:{county:'',station:'',well:'well',review:''},items:{},homeItems:{},fields:{},med:{},active:null,onlyMissing:false};}
+let storageOK=true;
+function load(){
+  try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){storageOK=false;S=fresh();}
+  if(!S.people||!S.people.length)S.people=fresh().people;
+  S.items=S.items||{};S.homeItems=S.homeItems||{};S.fields=S.fields||{};S.med=S.med||{};S.home=Object.assign(fresh().home,S.home||{});
+  if(!S.people.find(p=>p.id===S.active))S.active=S.people[0].id;
+  try{localStorage.setItem(KEY+'-t','1');localStorage.removeItem(KEY+'-t');}catch(e){storageOK=false;}
+  $('#storageWarn').hidden=storageOK;
+}
+function save(){if(!storageOK)return;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){storageOK=false;$('#storageWarn').hidden=false;}}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600);}
+
+function applies(o,p){if(!o||!o.when)return true;if(o.when==='driver')return !!p.driver;if(o.when==='meds')return !!p.meds;if(o.when==='well')return S.home.well==='well';return true;}
+function val(store,id){return store?store[id]:undefined;}
+function frac(o,v){if(o&&o.q){const n=Math.max(0,Number(v)||0);return Math.min(1,n/o.q);}return v?1:0;}
+function personStore(p){return S.items[p.id]||(S.items[p.id]={});}
+function stats(p){
+  const st=personStore(p);let total=0,done=0,lo=0,hi=0;
+  PERSON.forEach(g=>g.items.forEach(([id,,o])=>{if(!applies(o,p))return;const f=frac(o,st[id]);
+    if(!(o&&o.opt)){total++;if(f>=1)done++;if(o&&o.c){lo+=o.c[0]*(1-f);hi+=o.c[1]*(1-f);}}}));
+  return {total,done,lo,hi};
+}
+function homeStats(){let total=0,done=0,lo=0,hi=0;HOME.forEach(g=>g.items.forEach(([id,,o])=>{if(!applies(o))return;total++;const f=frac(o,S.homeItems[id]);if(f>=1)done++;if(o&&o.c){lo+=o.c[0]*(1-f);hi+=o.c[1]*(1-f);}}));return {total,done,lo,hi};}
+const money=(lo,hi)=>{lo=Math.round(lo);hi=Math.round(hi);if(hi<=0)return '$0';return lo===hi?'$'+lo:'$'+lo+'–'+hi;};
+
+function itemHTML(scope,id,label,o,v){
+  o=o||{};const f=frac(o,v),done=f>=1;const key=scope+':'+id;
+  const tag=o.opt?'<span class="tag opt">optional</span>':'';
+  const cost=o.c?'<span class="cost">'+(o.c[1]===0?'free':money(o.c[0],o.c[1]))+'</span>':'<span class="cost">free</span>';
+  if(o.q){
+    const n=Number(v)||0,need=Math.max(0,o.q-n);
+    return `<div class="item qty${done?' done':''}" data-done="${done}"><div><span style="font-weight:500">${esc(label)}</span>${tag}</div>
+      <div class="qtybox"><input type="number" inputmode="decimal" min="0" step="${o.step||1}" value="${n||''}" placeholder="0" data-k="${key}" aria-label="${esc(label)}: how many you have"><span>/ ${o.q} ${esc(o.unit)}</span></div>
+      <div class="meta">${done?'Target met.':`Still need ${+need.toFixed(1)} ${esc(o.unit)}.`} ${o.c?'Full target about '+money(o.c[0],o.c[1])+'.':''} ${o.note?esc(o.note):''}</div></div>`;
+  }
+  const inp='i-'+scope+'-'+id;
+  return `<div class="item${done?' done':''}" data-done="${done}"><input type="checkbox" id="${inp}" data-k="${key}" ${done?'checked':''}>
+    <label for="${inp}">${esc(label)}${tag}</label>${cost}${o.note?`<div class="meta">${esc(o.note)}</div>`:''}</div>`;
+}
+function groupHTML(g,scope,store,p,openSet){
+  const rows=g.items.filter(([,,o])=>applies(o,p));if(!rows.length)return '';
+  let total=0,done=0;rows.forEach(([id,,o])=>{if(o&&o.opt)return;total++;if(frac(o,store[id])>=1)done++;});
+  let body=rows.filter(([id,,o])=>!(S.onlyMissing&&frac(o,store[id])>=1)).map(([id,l,o])=>itemHTML(scope,id,l,o,store[id])).join('');
+  if(!body)body='<div class="empty">All done here.</div>';
+  const open=openSet.has(g.id)?' open':'';
+  return `<details class="group" data-g="${g.id}"${open}><summary><h3>${esc(g.title)}</h3><a class="whylink" href="#${g.why}" data-why="${g.why}">Why?</a><span class="count${done===total?' done':''}">${done}/${total}</span></summary><div class="items">${body}</div></details>`;
+}
+function openGroups(){const s=new Set();document.querySelectorAll('details.group[open]').forEach(d=>s.add(d.dataset.g));return s;}
+let firstRender=true;
+function renderList(){
+  const os=firstRender?new Set(['free','water','h-gear']):openGroups();firstRender=false;
+  const p=S.people.find(x=>x.id===S.active);
+  $('#peopleChips').innerHTML=S.people.map(x=>{const s=stats(x);return `<button class="chip" type="button" data-person="${x.id}" aria-pressed="${x.id===S.active}">${esc(x.name||'Unnamed')} <small>${s.done}/${s.total}</small></button>`;}).join('');
+  const s=stats(p),hs=homeStats(),st=personStore(p),w=Number(st.water)||0;
+  const allW=S.people.reduce((a,x)=>a+(Number(personStore(x).water)||0),0),allT=14*S.people.length;
+  const pct=x=>Math.round(x*100);
+  $('#stats').innerHTML=`
+   <div class="stat"><b>${s.done}/${s.total}</b><span>${esc(p.name||'This person')}: items done</span><div class="bar"><i style="width:${pct(s.done/s.total)}%"></i></div></div>
+   <div class="stat"><b>${+w.toFixed(1)} / 14 gal</b><span>${esc(p.name||'This person')}: water</span><div class="bar"><i style="width:${pct(Math.min(1,w/14))}%"></i></div></div>
+   <div class="stat"><b>${+allW.toFixed(1)} / ${allT} gal</b><span>Whole household water</span><div class="bar"><i style="width:${pct(Math.min(1,allW/allT))}%"></i></div></div>
+   <div class="stat"><b>${money(s.lo,s.hi)}</b><span>Rough cost to finish ${esc(p.name||'this person')}'s list</span></div>`;
+  $('#costNote').textContent='Costs are rough 2026 estimates. Use what you already have first.';
+  $('#personGroups').innerHTML=PERSON.map(g=>groupHTML(g,'p',st,p,os)).join('');
+  const n=S.people.length;
+  $('#homeShare').textContent=`Shared gear left: about ${money(hs.lo,hs.hi)} for the home, or ${money(hs.lo/n,hs.hi/n)} each split ${n} way${n>1?'s':''}.`;
+  $('#homeGroups').innerHTML=HOME.map(g=>groupHTML(g,'h',S.homeItems,p,os)).join('');
+  $('#onlyMissing').checked=!!S.onlyMissing;
+}
+function renderHome(){
+  $('#peopleList').innerHTML=S.people.map(p=>`<div class="person-row" data-pid="${p.id}">
+    <div class="name"><label class="sr" for="n-${p.id}">Name</label><input type="text" id="n-${p.id}" value="${esc(p.name)}" data-pf="name" placeholder="Name" aria-label="Name"></div>
+    <label class="check-inline"><input type="checkbox" data-pf="driver" ${p.driver?'checked':''}> Drives</label>
+    <label class="check-inline"><input type="checkbox" data-pf="meds" ${p.meds?'checked':''}> Takes medicine</label>
+    <button class="iconbtn" type="button" data-remove="${p.id}" aria-label="Remove ${esc(p.name||'person')}" ${S.people.length<2?'disabled':''}>Remove</button></div>`).join('');
+  const c=$('#county');if(c.options.length<2)Object.keys(COUNTIES).forEach(k=>c.add(new Option(k,k)));c.value=S.home.county;
+  const sel=$('#station');const rec=S.home.county&&COUNTIES[S.home.county]?COUNTIES[S.home.county].st:'';
+  sel.innerHTML='<option value="">Choose…</option>'+STATIONS.map(([n,f])=>`<option value="${n}">${n} · ${f} MHz${n===rec?' (try first)':''}</option>`).join('');
+  sel.value=S.home.station;$('#well').value=S.home.well;$('#review').value=S.home.review;
+  $('#homeFields').innerHTML=HFIELDS.filter(f=>f[0]!=='breakerspot'||S.home.well==='well').map(([k,l,t,h])=>`<div class="field"><label for="f-${k}">${l}</label><input id="f-${k}" type="${t}" data-f="${k}" value="${esc(S.fields[k])}" ${t==='tel'?'inputmode="tel" autocomplete="off"':''}>${h?`<p class="hint">${esc(h)}</p>`:''}</div>`).join('');
+  $('#medFields').innerHTML=S.people.map(p=>{const m=S.med[p.id]||{};return `<div class="grid" style="margin-bottom:14px" data-mid="${p.id}"><div class="field" style="grid-column:1/-1"><label for="m-${p.id}">${esc(p.name||'Unnamed')}: medicines and doses</label><textarea id="m-${p.id}" data-m="meds" placeholder="Or write: none">${esc(m.meds)}</textarea></div>
+    <div class="field"><label for="ph-${p.id}">Pharmacy</label><input id="ph-${p.id}" data-m="pharm" value="${esc(m.pharm)}"></div>
+    <div class="field"><label for="dr-${p.id}">Doctor</label><input id="dr-${p.id}" data-m="doc" value="${esc(m.doc)}"></div>
+    <div class="field"><label for="al-${p.id}">Allergies / conditions</label><input id="al-${p.id}" data-m="allergy" value="${esc(m.allergy)}"></div></div>`;}).join('');
+}
+const telHref=n=>'tel:'+String(n).replace(/[^\d+]/g,'');
+function station(){const s=STATIONS.find(x=>x[0]===S.home.station);return s?`${s[0]}, ${s[1]} MHz`:'';}
+function renderEmergency(){
+  const F=S.fields,co=COUNTIES[S.home.county];
+  const calls=[['911','Danger, fire, CO alarm, medical emergency','911',1],['211','Warming centers, shelters, fuel help','211',0]];
+  const cards=calls.map(([b,t,n,r])=>`<a class="call${r?' red':''}" href="tel:${n}"><b>${b}</b><span>${t}</span></a>`);
+  [['utility','Report power outage'],['family','Family contact'],['outside','Out-of-area contact'],['neighbor','Neighbor']].forEach(([k,t])=>{
+    cards.push(F[k]?`<a class="call" href="${telHref(F[k])}"><b>${esc(F[k])}</b><span>${t}</span></a>`:`<button class="call missing" type="button" data-go="home" style="text-align:left;font:inherit;cursor:pointer"><b style="font-size:16px">Add number</b><span>${t}</span></button>`);});
+  if(co)co.caa.forEach(([n,ph])=>cards.push(`<a class="call" href="${telHref(ph)}"><b>${ph}</b><span>${esc(n)} (fuel and heating help)</span></a>`));
+  $('#callgrid').innerHTML=cards.join('');
+  const well=S.home.well==='well';
+  const st=station();
+  $('#steps').innerHTML=`
+   <li class="warn"><h3>CO alarm or anyone dizzy, headachy or sleepy?</h3><p>Everyone goes outside into fresh air right away, then call 911. Don't go back in until firefighters say it's safe.</p></li>
+   <li><h3>Report the outage</h3><p>${F.utility?`Call <a href="${telHref(F.utility)}">${esc(F.utility)}</a>.`:'Call your electric company\u2019s outage line (it\u2019s on your bill).'} Stay away from downed lines; treat every wire as live.</p></li>
+   <li><h3>Keep the fridge and freezer closed</h3><p>Food in the fridge stays safe for about 4 hours. A full freezer lasts about 48 hours, or 24 if it's half full. Eat fridge food first, then freezer food, then cans.</p></li>
+   <li class="warn"><h3>Heat and generators safely</h3><ul><li>Never use a generator, grill, camp stove or gas oven indoors or in the garage.</li><li>Run generators at least 20 feet from windows, doors and vents.</li><li>Never plug a generator into a wall outlet without a transfer switch. It can kill line workers.</li></ul></li>
+   <li><h3>Water</h3><ul>${well?'<li>No power means the well pump is off. Use your stored water: 1 gallon per person per day.</li>':'<li>Listen for boil-water notices from your town.</li>'}${F.waterspot?`<li>Stored water: ${esc(F.waterspot)}</li>`:''}<li>Unsure about water? Boil it for 1 minute, or add 8 drops of plain bleach per gallon (16 if cloudy or very cold) and wait 30 minutes.</li><li>Use buckets of tub water to flush the toilet.</li></ul></li>
+   <li><h3>Stay warm together</h3><p>Pick one small room, close the doors, and layer up: hats, socks, blankets. If the house gets too cold, call 211 to find a warming center.</p></li>
+   <li><h3>Medicine</h3><p>Medicine that needs refrigeration should generally be replaced after a day or more without power. If a medicine is life-sustaining, keep taking it until you can get a replacement.</p></li>
+   <li><h3>Listen for updates</h3><p>NOAA weather radio${st?': '+esc(st):', 162.400–162.550 MHz'}. Save phone battery: low-power mode, and only turn the phone on to check.</p></li>
+   <li><h3>Calls or texts asking for money</h3><p>Hang up and call the person back on a number you already know. Ask for the family code word. Never pay with gift cards, crypto or wire transfers.</p></li>`;
+}
+function renderPrintWho(){const w=$('#printWho'),cur=w.value||'all';w.innerHTML='<option value="all">Everyone</option>'+S.people.map(p=>`<option value="${p.id}">${esc(p.name||'Unnamed')}</option>`).join('');w.value=[...w.options].some(o=>o.value===cur)?cur:'all';}
+function renderPaper(){
+  const what=$('#printWhat').value,who=$('#printWho').value,med=$('#printMed').checked;
+  const list=who==='all'?S.people:S.people.filter(p=>p.id===who);const F=S.fields;
+  const dl=pairs=>'<dl>'+pairs.filter(x=>x[1]).map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')+'</dl>';
+  if(what==='card'){
+    const shared=dl([['Electric outage',F.utility],['Family',F.family],['Out-of-area',F.outside],['Neighbor',F.neighbor],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
+    const co=COUNTIES[S.home.county];
+    $('#paper').innerHTML=list.map(p=>{const m=S.med[p.id]||{};return `<div class="pcard"><h3>${esc(p.name||'Emergency card')}</h3>
+      <p class="big" style="margin:2px 0 6px">911 for danger · 211 for warming centers and help</p>
+      <div class="two"><div>${shared}${co?'<dl>'+co.caa.map(([n,ph])=>`<dt>Fuel help</dt><dd>${esc(ph)} (${esc(n)})</dd>`).join('')+'</dl>':''}</div>
+      <div><ul><li>CO alarm: everyone outside, call 911.</li><li>Generator 20+ ft from the house. Never indoors.</li><li>Fridge 4 hrs, full freezer 48 hrs.</li><li>Bad water: boil 1 min, or 8 drops bleach per gallon, wait 30 min.</li><li>Money request? Hang up, call back, ask for the code word.</li></ul></div></div>
+      ${med?dl([['Medicines',m.meds],['Allergies',m.allergy],['Pharmacy',m.pharm],['Doctor',m.doc]]):''}</div>`;}).join('')+'<p class="note">Code word: not printed on purpose. Keep it in your head.</p>';
+  }else{
+    let html='';
+    list.forEach(p=>{const st=personStore(p);const rows=[];PERSON.forEach(g=>g.items.forEach(([id,l,o])=>{if(!applies(o,p))return;const v=st[id],f=frac(o,v);if(f>=1||(o&&o.opt))return;
+      const need=o&&o.q?`${+(o.q-(Number(v)||0)).toFixed(1)} ${o.unit}`:'';const c=o&&o.c?money(o.c[0]*(1-f),o.c[1]*(1-f)):'free';rows.push(`<tr><td>☐</td><td>${esc(l)}</td><td class="n">${esc(need)}</td><td class="n">${c}</td></tr>`);}));
+      const s=stats(p);html+=`<div class="pcard"><h3>${esc(p.name||'Unnamed')}: still needed</h3><p class="note" style="margin:0 0 6px">About ${money(s.lo,s.hi)} total. Buy a little each trip.</p>${rows.length?`<table class="t"><thead><tr><th></th><th>Item</th><th>Amount</th><th>Cost</th></tr></thead><tbody>${rows.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;});
+    const hr=[];HOME.forEach(g=>g.items.forEach(([id,l,o])=>{if(!applies(o))return;if(frac(o,S.homeItems[id])>=1)return;hr.push(`<tr><td>☐</td><td>${esc(l)}</td><td class="n">${o&&o.c?money(o.c[0],o.c[1]):'free'}</td></tr>`);}));
+    html+=`<div class="pcard"><h3>For the whole home</h3>${hr.length?`<table class="t"><tbody>${hr.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;
+    $('#paper').innerHTML=html;
+  }
+}
+function renderAll(){renderList();renderHome();renderEmergency();renderPrintWho();renderPaper();}
+
+function show(tab){document.querySelectorAll('nav.tabs [role=tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
+  document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+tab);
+  if(tab==='list')renderList();if(tab==='emergency')renderEmergency();if(tab==='print'){renderPrintWho();renderPaper();}}
+document.addEventListener('click',e=>{
+  const go=e.target.closest('[data-go]');if(go){show(go.dataset.go);window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'});return;}
+  const tab=e.target.closest('[data-tab]');if(tab){show(tab.dataset.tab);return;}
+  const why=e.target.closest('[data-why]');if(why){e.preventDefault();show('why');const t=document.getElementById(why.dataset.why);if(t)t.scrollIntoView({behavior:'smooth'});return;}
+  const ch=e.target.closest('[data-person]');if(ch){S.active=ch.dataset.person;save();renderList();return;}
+  const rm=e.target.closest('[data-remove]');if(rm&&S.people.length>1){const id=rm.dataset.remove;S.people=S.people.filter(p=>p.id!==id);delete S.items[id];delete S.med[id];if(S.active===id)S.active=S.people[0].id;save();renderAll();return;}
+});
+// checklist inputs
+document.addEventListener('change',e=>{
+  const k=e.target.dataset&&e.target.dataset.k;if(!k)return;const [scope,id]=k.split(':');
+  const store=scope==='h'?S.homeItems:personStore(S.people.find(p=>p.id===S.active));
+  store[id]=e.target.type==='checkbox'?e.target.checked:Math.max(0,Number(e.target.value)||0);
+  save();renderList();
+});
+$('#onlyMissing').addEventListener('change',e=>{S.onlyMissing=e.target.checked;save();renderList();});
+$('#addPerson').addEventListener('click',()=>{const p={id:uid(),name:'',driver:false,meds:false};S.people.push(p);save();renderAll();const i=document.getElementById('n-'+p.id);if(i)i.focus();});
+$('#peopleList').addEventListener('input',e=>{const row=e.target.closest('[data-pid]');if(!row)return;const p=S.people.find(x=>x.id===row.dataset.pid);const f=e.target.dataset.pf;if(!f)return;
+  p[f]=e.target.type==='checkbox'?e.target.checked:e.target.value;save();
+  if(e.target.type==='checkbox')renderAll();else{renderPrintWho();document.querySelectorAll(`[data-mid="${p.id}"] label`)[0].textContent=(p.name||'Unnamed')+': medicines and doses';}});
+$('#county').addEventListener('change',e=>{S.home.county=e.target.value;const c=COUNTIES[e.target.value];if(c&&!S.home.station)S.home.station=c.st;save();renderHome();renderEmergency();});
+$('#station').addEventListener('change',e=>{S.home.station=e.target.value;save();});
+$('#well').addEventListener('change',e=>{S.home.well=e.target.value;save();renderAll();});
+$('#review').addEventListener('change',e=>{S.home.review=e.target.value;save();});
+$('#homeFields').addEventListener('input',e=>{const k=e.target.dataset.f;if(k){S.fields[k]=e.target.value;save();}});
+$('#medFields').addEventListener('input',e=>{const r=e.target.closest('[data-mid]');const k=e.target.dataset.m;if(!r||!k)return;(S.med[r.dataset.mid]=S.med[r.dataset.mid]||{})[k]=e.target.value;save();});
+['printWhat','printWho','printMed'].forEach(id=>$('#'+id).addEventListener('change',renderPaper));
+$('#printBtn').addEventListener('click',()=>{renderPaper();try{window.print();}catch(e){toast('Printing is blocked here. Open the app in its own tab to print.');}});
+function download(name,text,type){try{const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);toast('Downloading '+name);}catch(e){toast('Downloads are blocked here. Open the app in its own tab.');}}
+const today=()=>new Date().toISOString().slice(0,10);
+$('#exportBtn').addEventListener('click',()=>download('winter-plan-backup-'+today()+'.json',JSON.stringify(S,null,1),'application/json'));
+$('#offlineBtn').addEventListener('click',()=>download('nh-winter-plan.html',ORIGINAL_HTML,'text/html'));
+$('#importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.people))throw 0;S=d;save();load();renderAll();toast('Plan loaded');}catch(err){toast('That file isn\u2019t a plan backup.');}e.target.value='';};r.readAsText(f);});
+const dlg=$('#confirmDlg');
+$('#resetBtn').addEventListener('click',()=>{if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');});
+$('#cancelReset').addEventListener('click',()=>dlg.close());
+$('#doReset').addEventListener('click',()=>{S=fresh();S.active=S.people[0].id;save();dlg.close();renderAll();toast('Cleared');});
+
+load();renderAll();
+})();
+</script>
+<style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+</body>
+</html>
