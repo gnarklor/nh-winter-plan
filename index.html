@@ -141,6 +141,12 @@ table.t th,table.t td{text-align:left;padding:7px 8px;border-bottom:1px solid #e
 table.t td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 .printopts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 12px}
 .printopts select{min-height:44px;padding:6px 10px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:16px var(--body);background:#fff}
+.blank{display:inline-block;min-width:150px;border-bottom:1px solid #000;height:1.1em}
+.pcard td .blank{display:block;min-width:3em;width:100%}
+.pcard table.t{table-layout:auto;word-break:break-word}
+.pcard h4{margin:12px 0 4px;font-size:15px;text-transform:uppercase;letter-spacing:.05em}
+.pcard table.t{font-size:14px}
+.pcard table.t th{font-size:13px}
 #paper{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:20px;color:#000}
 .pcard{break-inside:avoid;page-break-inside:avoid;border:2px solid #000;border-radius:6px;padding:14px 16px;margin:0 0 14px}
 .pcard h3{font-family:var(--display);font-size:20px;margin:0 0 2px}
@@ -195,6 +201,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   #v-print>*:not(#paper){display:none!important}
   main{padding:0}
   #paper{border:0;padding:0}
+  .pcard.sheet{break-inside:auto;page-break-inside:auto;border:0;padding:0}
+  .sheet table.t td,.sheet table.t th{padding:4px 6px}
+  .sheet h4{margin:9px 0 2px}
+  @page{margin:0.5in}
   .wrap{max-width:none;padding:0}
 }
 </style>
@@ -379,6 +389,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
       <div class="printopts">
         <label for="printWhat" class="sr">Print</label>
         <select id="printWhat">
+          <option value="info">Contacts and household info (full page)</option>
           <option value="card">Emergency card</option>
           <option value="shop">Shopping list (what's still needed)</option>
         </select>
@@ -649,6 +660,38 @@ function renderPaper(){
   const what=$('#printWhat').value,who=$('#printWho').value,med=$('#printMed').checked;
   const list=who==='all'?S.people:S.people.filter(p=>p.id===who);const F=S.fields;
   const dl=pairs=>'<dl>'+pairs.filter(x=>x[1]).map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')+'</dl>';
+  if(what==='info'){
+    const B='<span class="blank"></span>';const cell=v=>v?esc(v):B;
+    const co=COUNTIES[S.home.county];const stn=STATIONS.find(x=>x[0]===S.home.station);
+    const contacts=[['Electric company (outage line)','utility'],['Family contact','family'],['Out-of-area contact','outside'],['Neighbor','neighbor']];
+    const fmtDate=d=>{if(!d)return '';const [y,m,dd]=d.split('-');return `${+m}/${+dd}/${y}`;};
+    let h=`<div class="pcard sheet"><h3>Our household emergency info</h3><p class="note" style="margin:0">Printed ${new Date().toLocaleDateString()}${S.home.review?' · Supplies last checked '+fmtDate(S.home.review):''}</p>
+    <h4>Emergency numbers</h4><table class="t"><tbody>
+      <tr><td><b>911</b></td><td>Danger, fire, carbon monoxide alarm, medical emergency</td></tr>
+      <tr><td><b>211</b></td><td>Warming centers, shelters, help finding resources</td></tr>
+      ${co?co.caa.map(([n,ph])=>`<tr><td class="n"><b>${esc(ph)}</b></td><td>${esc(n)}: Fuel Assistance and heating help</td></tr>`).join(''):`<tr><td>${B}</td><td>Community Action Agency (fuel and heating help)</td></tr>`}
+      <tr><td class="n"><b>(603) 271-3670</b></td><td>NH Dept. of Energy: Fuel and Electric Assistance questions</td></tr>
+    </tbody></table>
+    <h4>Our contacts</h4><table class="t"><thead><tr><th>Who</th><th>Name</th><th>Phone</th></tr></thead><tbody>
+      ${contacts.map(([l,k])=>`<tr><td>${l}</td><td>${cell(F[k+'Name'])}</td><td class="n">${cell(F[k])}</td></tr>`).join('')}
+      <tr><td>Other</td><td>${B}</td><td>${B}</td></tr>
+    </tbody></table>
+    <h4>Weather radio</h4><p style="margin:0 0 4px">${stn?`<b>Our station: ${esc(stn[0])}, ${stn[1]} MHz</b>`:`Our station: ${B} MHz`}</p>
+    <p class="note" style="margin:0">Other NH stations: ${STATIONS.filter(x=>!stn||x[0]!==stn[0]).map(x=>x[0]+' '+x[1]).join(' · ')}</p>
+    <h4>Places and supplies</h4><table class="t"><tbody>
+      <tr><td>Meeting place</td><td>${cell(F.meet)}</td></tr>
+      <tr><td>Backup ER / hospital</td><td>${cell(F.er)}</td></tr>
+      <tr><td>Water stored at</td><td>${cell(F.waterspot)}</td></tr>
+      <tr><td>Emergency kit at</td><td>${cell(F.kitspot)}</td></tr>
+      ${S.home.well==='well'?`<tr><td>Well pump breaker</td><td>${cell(F.breakerspot)}</td></tr>`:''}
+      <tr><td>Water comes from</td><td>${S.home.well==='well'?'Private well (no power means no water)':'Town water'}</td></tr>
+      ${S.home.county?`<tr><td>County</td><td>${esc(S.home.county)}</td></tr>`:''}
+    </tbody></table>
+    <h4>People in our home</h4><table class="t"><tbody>${S.people.map(p=>`<tr><td><b>${esc(p.name||'Unnamed')}</b></td><td>${[p.driver?'Drives':'',p.meds?'Takes medicine':''].filter(Boolean).join(' · ')}</td></tr>`).join('')}</tbody></table>`;
+    if(med){h+=`<h4>Medical details</h4><table class="t"><thead><tr><th>Person</th><th>Medicines</th><th>Allergies</th><th>Pharmacy</th><th>Doctor</th></tr></thead><tbody>${list.map(p=>{const m=S.med[p.id]||{};return `<tr><td><b>${esc(p.name||'Unnamed')}</b></td><td>${cell(m.meds)}</td><td>${cell(m.allergy)}</td><td>${cell(m.pharm)}</td><td>${cell(m.doc)}</td></tr>`;}).join('')}</tbody></table>`;}
+    h+=`<p class="note" style="margin:10px 0 0">Family code word: not printed on purpose. Keep it in your head. Blank lines are for writing in by hand.</p></div>`;
+    $('#paper').innerHTML=h;return;
+  }
   if(what==='card'){
     const who=k=>[F[k+'Name'],F[k]].filter(Boolean).join(' · ');
     const shared=dl([['Electric outage',who('utility')],['Family',who('family')],['Out-of-area',who('outside')],['Neighbor',who('neighbor')],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
