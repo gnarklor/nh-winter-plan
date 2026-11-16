@@ -56,7 +56,9 @@ main{padding:22px 0 60px}
 section.view[hidden]{display:none}
 h2{font-family:var(--display);font-size:26px;line-height:1.2;margin:0 0 6px}
 h3{font-size:17px;margin:0}
-.sub{color:var(--muted);margin:0 0 18px;max-width:66ch}
+.sub{color:var(--ink);font-size:17.5px;font-weight:500;line-height:1.5;margin:6px 0 20px;max-width:66ch;background:var(--spruce-2);border-left:5px solid var(--spruce);border-radius:0 var(--r-md) var(--r-md) 0;padding:12px 16px}
+.sub.alert{background:var(--red-2);border-left-color:var(--red)}
+.sub strong{color:var(--red)}
 .banner{border:1px solid #e0c48a;background:var(--amber-2);color:#4d3600;border-radius:var(--r-md);padding:10px 14px;margin:0 0 16px;font-size:15px}
 .people{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .chip{min-height:44px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font:600 15px var(--body);color:var(--ink);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
@@ -173,7 +175,7 @@ dialog::backdrop{background:rgba(20,30,25,.45)}
 .how ol{margin:0;padding-left:18px}
 .how ol li{margin:0 0 2px}
 .donebox{background:var(--spruce-2);border-radius:var(--r-md);padding:8px 12px;font-weight:600;color:var(--spruce)}
-.start .tips{font-size:15px;color:var(--muted);margin:4px 0 12px;padding-left:18px}
+.start .tips{font-size:16px;color:var(--ink);margin:4px 0 12px;padding-left:18px}
 .linkbtn{background:none;border:0;padding:0;color:var(--spruce);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px}
 .linkbtn.inline{min-height:0;padding:4px 0;font-weight:600}
 .how div.other{display:none}
@@ -324,7 +326,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   <!-- EMERGENCY -->
   <section class="view" id="v-emergency" aria-labelledby="h-em" hidden>
     <h2 id="h-em">Emergency steps</h2>
-    <p class="sub">Work down the list. If anyone is in danger, call 911 first.</p>
+    <p class="sub alert">Work down the list. <strong>If anyone is in danger, call 911 first.</strong></p>
     <div class="callgrid" id="callgrid"></div>
     <ol class="steps" id="steps"></ol>
   </section>
