@@ -164,11 +164,11 @@ dialog{border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;max-w
 dialog::backdrop{background:rgba(20,30,25,.45)}
 .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r-md);font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
 .toast.show{opacity:1}
-.start{border:2px solid var(--spruce);background:var(--card);border-radius:var(--r-lg);padding:18px;margin:0 0 20px}
-.start h2{font-size:24px}
+.btn.alarm.big{font-size:18px;padding:12px 26px;letter-spacing:.02em}
 .start ol{margin:10px 0 0;padding-left:22px}
 .start ol>li{margin:0 0 12px;padding-left:4px}
 .start ol>li>b{font-size:17px}
+.start .how ol>li>b{font-size:inherit}
 .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin:8px 0 0}
 .how div{border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;font-size:15px;background:#fff}
 .how div.mine{border:2px solid var(--spruce);background:var(--spruce-2)}
@@ -202,16 +202,37 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   .item.qty .meta{grid-column:1}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.start h3.step{display:flex;align-items:center;gap:10px;font-size:20px;margin:26px 0 6px}
+.start h3.step .num{display:inline-grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;background:var(--spruce);color:#fff;font-size:16px}
+.start>p{max-width:66ch;margin:0 0 8px}
+.start ul.bul{max-width:66ch;padding-left:20px;margin:6px 0 14px}.start ul.bul li{margin:0 0 6px}
+.btn.light{background:#f5f1e8;color:var(--spruce);border-color:#f5f1e8}
+.btn.light:hover{background:#fff}
+#printsave{margin-top:36px;padding-top:24px;border-top:2px solid var(--line);scroll-margin-top:60px}
+#v-emergency{scroll-margin-top:60px}
+@media screen{#paper.collapsed{display:none}}
+.pbreak{break-before:page;page-break-before:always;margin-top:18px}
+.ptitle{font-family:var(--display);font-size:20px;margin:0 0 4px}
 @media print{
   body{background:#fff}
-  header.top,nav.tabs,footer,.noprint,.toast,section.view:not(#v-print){display:none!important}
-  section#v-print{display:block!important}
-  #v-print>*:not(#paper){display:none!important}
+  header.top,nav.tabs,footer,.noprint,.toast,section.view:not(#v-emergency){display:none!important}
+  section#v-emergency{display:block!important}
+  #v-emergency>*:not(#printsave),#printsave>*:not(#paper){display:none!important}
+  #printsave{margin:0;padding:0;border:0}
+  #paper{display:block!important}
   main{padding:0}
   #paper{border:0;padding:0}
   .pcard.sheet{break-inside:auto;page-break-inside:auto;border:0;padding:0}
-  .sheet table.t td,.sheet table.t th{padding:4px 6px}
-  .sheet h4{margin:9px 0 2px}
+  .pcard.sheet,.pcard.sheet table.t{font-size:10pt}
+  .pcard.sheet h3{font-size:16pt}
+  .sheet table.t td,.sheet table.t th{padding:2.5px 6px}
+  .sheet h4{margin:7px 0 2px;font-size:10pt}
+  .pcard.shop{break-inside:auto;page-break-inside:auto;border:1px solid #000;padding:8px 12px;margin:0 0 10px}
+  .pcard.shop h3{font-size:13pt}
+  .pcard.shop table.t{font-size:9.5pt}
+  .pcard.shop table.t td,.pcard.shop table.t th{padding:2px 6px}
+  table.t tr{break-inside:avoid}
+  #shopStart{margin-top:10px!important}
   @page{margin:0.5in}
   .pcard.wallet{width:3.4in;font-size:8.5pt;border:1.5px dashed #000;padding:10px 12px;display:inline-block;vertical-align:top;margin:0 0.1in 0.15in 0}
   .pcard.wallet h3{font-size:14pt}
@@ -234,27 +255,30 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
     <h1>Our winter emergency plan</h1>
     <p class="lede">Two weeks without power, water or phone lines, planned one person at a time. Everything you enter stays on this device.</p>
     <div class="hero-actions">
-      <button class="btn alarm" type="button" data-go="emergency">Power's out: open emergency steps</button>
+      <button class="btn alarm big" type="button" data-go="emergency">Emergency</button>
+      <button class="btn light" type="button" data-go="printsave">Print / Save</button>
       <button class="btn ghost-light" type="button" data-go="home">Set up our household</button>
     </div>
   </div>
 </header>
 <nav class="tabs" aria-label="Sections">
   <div class="wrap" role="tablist">
-    <button role="tab" data-tab="list" aria-selected="true">Checklist</button>
-    <button role="tab" data-tab="home" aria-selected="false">Our household</button>
+    <button role="tab" data-tab="start" aria-selected="true">Start here</button>
+    <button role="tab" data-tab="home" aria-selected="false">Household</button>
+    <button role="tab" data-tab="list" aria-selected="false">Checklist</button>
     <button role="tab" data-tab="emergency" class="em" aria-selected="false">Emergency</button>
-    <button role="tab" data-tab="print" aria-selected="false">Print &amp; save</button>
+    <button role="tab" data-tab="printsave" aria-selected="false">Print &amp; Save</button>
     <button role="tab" data-tab="why" aria-selected="false">Why it matters</button>
   </div>
 </nav>
 
 <main id="main" class="wrap">
-  <section class="start" id="startHere" aria-labelledby="h-start" hidden>
-    <h2 id="h-start">Start here: 3 steps</h2>
-    <ol>
-      <li><b>Put this app on your home screen.</b> That way it remembers what you've done.
-        <div id="installDone" class="donebox" hidden>Done. You opened it from your home screen, so your progress will be saved.</div>
+  <section class="view start" id="v-start" aria-labelledby="h-start">
+    <h2 id="h-start">Start here</h2>
+    <p class="sub">Do these three things once. It takes about 10 minutes, and you won't need to do it again.</p>
+    <h3 class="step"><span class="num">1</span>Put this app on your home screen</h3>
+    <p>That way it remembers everything you check off.</p>
+    <div id="installDone" class="donebox" hidden>Done. You opened it from your home screen, so your progress will be saved.</div>
         <div class="how" id="installHow">
           <div data-os="ios"><h4>iPhone or iPad</h4><ol><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (a square with an arrow pointing up).</li><li>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
           <div data-os="android"><h4>Android phone</h4><ol><li>Open this page in <b>Chrome</b>.</li><li>Tap the <b>three dots</b> at the top right.</li><li>Tap <b>Add to Home screen</b> or <b>Install app</b>, then <b>Install</b>.</li></ol></div>
@@ -262,26 +286,38 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
         </div>
         <button type="button" class="linkbtn" id="otherDevices" hidden>Show steps for other phones and computers</button>
         <div class="callout" id="inAppNote" hidden><b class="lead">Don't see those options?</b>You may have opened the link inside Messages, Facebook or email. Tap the menu (often <b>⋯</b> or <b>⋮</b>) and choose <b>"Open in Safari"</b> or <b>"Open in Chrome"</b> first.</div>
-      </li>
-      <li><b>Put in your name.</b> Tap <button type="button" class="linkbtn inline" data-go="home">Our household</button> and change "Me" to your name. Add anyone else in your home you're keeping track of.</li>
-      <li><b>Check things off as you get them.</b> For water and cans, type how many you have. Before you go shopping, turn on "Show only what's still needed."</li>
-    </ol>
+    <h3 class="step"><span class="num">2</span>Add your household</h3>
+    <p>Tap <button type="button" class="linkbtn inline" data-go="home">Household</button>. Change "Me" to your name, then tap <b>"Add a person"</b> for everyone else who lives with you.</p>
+    <ul class="bul">
+      <li><b>Drives:</b> check this for anyone who drives. It adds a car kit and "keep the gas tank half full" to their list.</li>
+      <li><b>Takes medicine:</b> check this for anyone on prescriptions. It adds 7 extra days of medicine and a paper medicine list to their list.</li>
+      <li><b>County:</b> fills in your local fuel-help phone number and the closest weather radio station.</li>
+      <li><b>Water comes from:</b> if you're on a well, it adds "find the well pump breaker," because no power means no water.</li>
+      <li><b>Phone numbers and places:</b> these become tap-to-call buttons on the Emergency tab and are included when you print.</li>
+    </ul>
+    <div class="callout"><b class="lead">How the totals update</b><ul>
+      <li><b>Water is one number for the whole home:</b> 14 gallons per person. Add a second person and the goal goes from 14 to 28 gallons.</li>
+      <li><b>Each person gets their own checklist</b> for food, warmth, light and medicine. Tap a name at the top of the Checklist to switch people.</li>
+      <li><b>Shared items</b>, like the radio and CO detector, are counted once for the home. The app shows the cost split between everyone.</li>
+      <li><b>The rough cost goes down</b> as you check things off, so you always know what's left to buy.</li>
+    </ul></div>
+    <h3 class="step"><span class="num">3</span>Check things off as you get them</h3>
+    <p>Open the <button type="button" class="linkbtn inline" data-go="list">Checklist</button>. For water and cans, type how many you have. Before you go shopping, turn on "Show only what's still needed."</p>
     <div class="callout"><b class="lead">Remember</b><ul>
       <li><b>Always open the app from the home-screen icon.</b> It works without internet after the first time.</li>
-      <li><b>Got a new phone?</b> Use Print &amp; save, then "Download plan backup" first.</li>
+      <li><b>Print a copy</b> with the <b>Print / Save</b> button at the top. Phones die in long outages.</li>
+      <li><b>Got a new phone?</b> Use Print / Save, then "Download plan backup" first.</li>
     </ul></div>
     <div style="display:flex;flex-wrap:wrap;gap:10px">
-      <button class="btn solid" type="button" id="hideStart">Got it, hide this</button>
+      <button class="btn solid" type="button" data-go="home">Go to Household</button>
       <button class="btn" type="button" id="shareBtn">Send this app to family</button>
     </div>
-    <p class="note" style="margin:10px 0 0;color:var(--ink)">Hiding this is safe. Tap <b>"How to use this app"</b> at the top of the Checklist to bring it back.</p>
   </section>
-  <div id="storageWarn" class="banner" hidden>This browser is blocking storage, so your progress will disappear when you close it. Use "Print &amp; save" to download a backup file.</div>
+  <div id="storageWarn" class="banner" hidden>This browser is blocking storage, so your progress will disappear when you close it. Use "Print / Save" to download a backup file.</div>
 
   <!-- CHECKLIST -->
   <section class="view" id="v-list" aria-labelledby="h-list">
     <h2 id="h-list">Checklist</h2>
-    <button type="button" class="howbtn" id="showStart2" hidden><span class="q" aria-hidden="true">?</span>How to use this app</button>
     <p class="sub">Pick a person. Each person works toward the same two-week target. Shared items, like the radio and CO detector, are counted once for the whole home.</p>
     <div class="people" id="peopleChips" role="group" aria-label="Choose a person"></div>
     <div class="stats" id="stats"></div>
@@ -296,7 +332,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
 
   <!-- HOUSEHOLD -->
   <section class="view" id="v-home" aria-labelledby="h-home" hidden>
-    <h2 id="h-home">Our household</h2>
+    <h2 id="h-home">Household</h2>
     <p class="sub">Add everyone who lives here. Check "Drives" for anyone who needs a car kit, and "Takes medicine" for anyone who needs a refill buffer.</p>
     <div class="panel">
       <h3>People</h3>
@@ -337,6 +373,32 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
     <p class="sub alert">Work down the list. <strong>If anyone is in danger, call 911 first.</strong></p>
     <div class="callgrid" id="callgrid"></div>
     <ol class="steps" id="steps"></ol>
+    <div id="printsave">
+    <h2 id="h-print">Print &amp; Save</h2>
+    <p class="sub">Phones die and Wi-Fi goes down. One printout covers everything: your household info page for the fridge, wallet cards for everyone, and a shopping list.</p>
+    <div class="panel noprint">
+      <h3>Print everything</h3>
+      <div class="printopts">
+        <label class="check-inline"><input type="checkbox" id="printMed"> Include medical details</label>
+        <button class="btn solid" type="button" id="printBtn">Print</button>
+        <button class="btn" type="button" id="previewBtn" aria-expanded="false">Show what will print</button>
+      </div>
+      <p class="note" id="printNote">Page 1 is the info page for the fridge. Page 2 has wallet cards (one per person) to cut out, then the shopping list. If the print window doesn't open, open this app in its own browser tab and choose Print from the browser menu.</p>
+    </div>
+    <div id="paper" class="collapsed" aria-label="Print preview"></div>
+    <div class="panel noprint" style="margin-top:16px">
+      <h3>Save a copy</h3>
+      <p class="note" style="margin-top:-6px">Your progress is saved on this device. Download a backup to keep it safe or move it to a new phone.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="btn" type="button" id="exportBtn">Download plan backup</button>
+        <label class="btn" for="importFile" style="cursor:pointer">Load a plan backup</label>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+        <button class="btn" type="button" id="offlineBtn">Download offline copy of this app</button>
+        <button class="btn" type="button" id="resetBtn" style="color:var(--red);border-color:var(--red)">Start over</button>
+      </div>
+      <p class="note" style="margin:12px 0 0">Tip: take a photo of the printed pages on your phone too.</p>
+    </div>
+    </div>
   </section>
 
   <!-- WHY -->
@@ -396,46 +458,9 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
     </article>
   </section>
 
-  <!-- PRINT & SAVE -->
-  <section class="view" id="v-print" aria-labelledby="h-print" hidden>
-    <h2 id="h-print">Print &amp; save</h2>
-    <p class="sub">Phones die and Wi-Fi goes down, so print the full info page for the fridge and a wallet card for each person. You can also save the whole app to a phone or a USB stick.</p>
-    <div class="panel noprint">
-      <h3>Printable pages</h3>
-      <div class="printopts">
-        <label for="printWhat" class="sr">Print</label>
-        <select id="printWhat">
-          <option value="info">Contacts and household info (full page)</option>
-          <option value="card">Wallet card (one per person)</option>
-          <option value="shop">Shopping list (what's still needed)</option>
-        </select>
-        <select id="printWho" aria-label="Who"></select>
-        <label class="check-inline"><input type="checkbox" id="printMed"> Include medical details</label>
-        <button class="btn solid" type="button" id="printBtn">Print</button>
-      </div>
-      <p class="note" id="printNote">If the print window doesn't open, open this app in its own browser tab and choose Print from the browser menu.</p>
-    </div>
-    <div id="paper" aria-label="Print preview"></div>
-    <div class="panel noprint" style="margin-top:16px">
-      <h3>Save a copy</h3>
-      <p class="note" style="margin-top:-6px">Your progress is saved in this browser. To move it to another device, or keep a backup, download a plan file.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px">
-        <button class="btn" type="button" id="exportBtn">Download plan backup</button>
-        <label class="btn" for="importFile" style="cursor:pointer">Load a plan backup</label>
-        <input type="file" id="importFile" accept=".json,application/json" hidden>
-        <button class="btn" type="button" id="offlineBtn">Download offline copy of this app</button>
-        <button class="btn" type="button" id="resetBtn" style="color:var(--red);border-color:var(--red)">Start over</button>
-      </div>
-      <ul class="note" style="margin:12px 0 0;padding-left:18px">
-        <li>The offline copy is a single file. Open it in any browser, even with no internet. Share it with family by text, email or USB stick.</li>
-        <li>Each person can keep their own copy on their phone and use the "Show only what's still needed" filter as a shopping list.</li>
-        <li>Take a photo of the printed pages and wallet card on your phone too.</li>
-      </ul>
-    </div>
-  </section>
 </main>
 <footer>
-  <div class="wrap"><button type="button" class="linkbtn" id="showStart">How to use this app</button> · Built from CDC, Ready.gov, NH Dept. of Energy, NH DHHS and CISA guidance. Costs are rough estimates for 2026. This is not a substitute for official alerts.</div>
+  <div class="wrap"><button type="button" class="linkbtn" data-go="start">How to use this app</button> · Built from CDC, Ready.gov, NH Dept. of Energy, NH DHHS and CISA guidance. Costs are rough estimates for 2026. This is not a substitute for official alerts.</div>
 </footer>
 <dialog id="confirmDlg">
   <h3 style="font-family:var(--display);font-size:20px;margin:0 0 8px">Start over?</h3>
@@ -526,7 +551,7 @@ const HOME=[
   ['cotest','Test the CO detector and its battery'],
   ['meet','Pick a meeting place and an out-of-area contact person'],
   ['assist','Check whether you qualify for Fuel or Electric Assistance (call 211)'],
-  ['printed','Print the full info page for the fridge and a wallet card for each person']
+  ['printed','Print everything (Print / Save button) and put the info page on the fridge']
  ]}
 ];
 const COUNTIES={
@@ -568,7 +593,7 @@ function load(){
   if(!S.people.find(p=>p.id===S.active))S.active=S.people[0].id;
   try{LS.setItem(KEY+'-t','1');LS.removeItem(KEY+'-t');}catch(e){storageOK=false;}
   $('#storageWarn').hidden=storageOK;
-  if(PREVIEW){$('#storageWarn').textContent='Preview version: progress resets when you close this page. To save progress, use the full app file (nh-winter-plan.html) or download a plan backup under Print & save.';$('#offlineBtn').hidden=true;}
+  if(PREVIEW){$('#storageWarn').textContent='Preview version: progress resets when you close this page. To save progress, use the full app file (nh-winter-plan.html) or download a plan backup under Print / Save.';$('#offlineBtn').hidden=true;}
 }
 function save(){if(!storageOK)return;try{LS.setItem(KEY,JSON.stringify(S));}catch(e){storageOK=false;$('#storageWarn').hidden=false;}}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600);}
@@ -669,12 +694,10 @@ function renderEmergency(){
    <li><h3>Listen for updates</h3><p>NOAA weather radio${st?': '+esc(st):', 162.400–162.550 MHz'}. Save phone battery: low-power mode, and only turn the phone on to check.</p></li>
    <li><h3>Calls or texts asking for money</h3><p>Hang up and call the person back on a number you already know. Ask for the family code word. Never pay with gift cards, crypto or wire transfers.</p></li>`;
 }
-function renderPrintWho(){const w=$('#printWho'),cur=w.value||'all';w.innerHTML='<option value="all">Everyone</option>'+S.people.map(p=>`<option value="${p.id}">${esc(p.name||'Unnamed')}</option>`).join('');w.value=[...w.options].some(o=>o.value===cur)?cur:'all';}
 function renderPaper(){
-  const what=$('#printWhat').value,who=$('#printWho').value,med=$('#printMed').checked;
-  const list=who==='all'?S.people:S.people.filter(p=>p.id===who);const F=S.fields;
+  const med=$('#printMed').checked;const list=S.people;const F=S.fields;let OUT='';
   const dl=pairs=>'<dl>'+pairs.filter(x=>x[1]).map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')+'</dl>';
-  if(what==='info'){
+  {
     const B='<span class="blank"></span>';const cell=v=>v?esc(v):B;
     const co=COUNTIES[S.home.county];const stn=STATIONS.find(x=>x[0]===S.home.station);
     const contacts=[['Electric company (outage line)','utility'],['Family contact 1','family'],['Family contact 2','family2'],['Family contact 3','family3'],['Family contact 4','family4'],['Out-of-area contact','outside'],['Neighbor','neighbor']];
@@ -704,35 +727,44 @@ function renderPaper(){
     <h4>People in our home</h4><table class="t"><tbody>${S.people.map(p=>`<tr><td><b>${esc(p.name||'Unnamed')}</b></td><td>${[p.driver?'Drives':'',p.meds?'Takes medicine':''].filter(Boolean).join(' · ')}</td></tr>`).join('')}</tbody></table>`;
     if(med){h+=`<h4>Medical details</h4><table class="t"><thead><tr><th>Person</th><th>Medicines</th><th>Allergies</th><th>Pharmacy</th><th>Doctor</th></tr></thead><tbody>${list.map(p=>{const m=S.med[p.id]||{};return `<tr><td><b>${esc(p.name||'Unnamed')}</b></td><td>${cell(m.meds)}</td><td>${cell(m.allergy)}</td><td>${cell(m.pharm)}</td><td>${cell(m.doc)}</td></tr>`;}).join('')}</tbody></table>`;}
     h+=`<p class="note" style="margin:10px 0 0">Family code word: not printed on purpose. Keep it in your head. Blank lines are for writing in by hand.</p></div>`;
-    $('#paper').innerHTML=h;return;
+    OUT+=h;
   }
-  if(what==='card'){
+  {
     const who=k=>[F[k+'Name'],F[k]].filter(Boolean).join(' · ');
     const shared=dl([['Electric outage',who('utility')],['Family',who('family')],['Family',who('family2')],['Family',who('family3')],['Family',who('family4')],['Out-of-area',who('outside')],['Neighbor',who('neighbor')],['Meet at',F.meet],['Backup ER',F.er],['Water stored',F.waterspot],['Kit',F.kitspot],['Well breaker',S.home.well==='well'?F.breakerspot:''],['NOAA radio',station()]]);
     const co=COUNTIES[S.home.county];
-    $('#paper').innerHTML=list.map(p=>{const m=S.med[p.id]||{};return `<div class="pcard wallet"><p class="note" style="margin:0;text-transform:uppercase;letter-spacing:.06em;font-size:11px">Wallet card</p><h3>${esc(p.name||'Wallet card')}</h3>
+    const n=Math.min(Math.max(S.people.length,1),8);
+    const one=`<div class="pcard wallet"><p class="note" style="margin:0;text-transform:uppercase;letter-spacing:.06em;font-size:11px">Emergency wallet card</p><h3>Our household</h3>
       <p class="big" style="margin:2px 0 6px">911 for danger · 211 for warming centers and help</p>
-      <div class="two"><div>${shared}${co?'<dl>'+co.caa.map(([n,ph])=>`<dt>Fuel help</dt><dd>${esc(ph)} (${esc(n)})</dd>`).join('')+'</dl>':''}</div>
-      <div><ul><li>CO alarm: everyone outside, call 911.</li><li>Generator 20+ ft from the house. Never indoors.</li><li>Fridge 4 hrs, full freezer 48 hrs.</li><li>Bad water: boil 1 min, or 8 drops bleach per gallon, wait 30 min.</li><li>Money request? Hang up, call back, ask for the code word.</li></ul></div></div>
-      ${med?dl([['Medicines',m.meds],['Allergies',m.allergy],['Pharmacy',m.pharm],['Doctor',m.doc]]):''}</div>`;}).join('')+'<p class="note">Cut out each card along the dashed line and fold it in half to fit a wallet. Code word: not printed on purpose. Keep it in your head.</p>';
-  }else{
-    let html='';
+      <div class="two"><div>${shared}${co?'<dl>'+co.caa.map(([nm,ph])=>`<dt>Fuel help</dt><dd>${esc(ph)} (${esc(nm)})</dd>`).join('')+'</dl>':''}</div>
+      <div><ul><li>CO alarm: everyone outside, call 911.</li><li>Generator 20+ ft from the house. Never indoors.</li><li>Fridge 4 hrs, full freezer 48 hrs.</li><li>Bad water: boil 1 min, or 8 drops bleach per gallon, wait 30 min.</li><li>Money request? Hang up, call back, ask for the code word.</li></ul></div></div></div>`;
+    OUT+=`<div class="pbreak"><h3 class="ptitle">Wallet cards</h3><p class="note" style="margin:0 0 8px">${n} identical cop${n>1?'ies':'y'}, one for each person. Cut along the dashed line and fold in half to fit a wallet. Family code word: not printed on purpose.</p>`+one.repeat(n)+'</div>';
+  }
+  {
+    let html='<div id="shopStart" style="margin-top:18px"><h3 class="ptitle">Shopping list</h3></div>';
     list.forEach(p=>{const st=personStore(p);const rows=[];PERSON.forEach(g=>g.items.forEach(([id,l,o])=>{if(!applies(o,p))return;const v=st[id],f=frac(o,v);if(f>=1||(o&&o.opt))return;
       const need=o&&o.q?`${+(o.q-(Number(v)||0)).toFixed(1)} ${o.unit}`:'';const c=o&&o.c?money(o.c[0]*(1-f),o.c[1]*(1-f)):'free';rows.push(`<tr><td>☐</td><td>${esc(l)}</td><td class="n">${esc(need)}</td><td class="n">${c}</td></tr>`);}));
-      const s=stats(p);html+=`<div class="pcard"><h3>${esc(p.name||'Unnamed')}: still needed</h3><p class="note" style="margin:0 0 6px">About ${money(s.lo,s.hi)} total. Buy a little each trip.</p>${rows.length?`<table class="t"><thead><tr><th></th><th style="width:100%">Item</th><th>Qty</th><th>Cost</th></tr></thead><tbody>${rows.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;});
+      const s=stats(p);html+=`<div class="pcard shop"><h3>${esc(p.name||'Unnamed')}: still needed</h3><p class="note" style="margin:0 0 6px">About ${money(s.lo,s.hi)} total. Buy a little each trip.</p>${rows.length?`<table class="t"><thead><tr><th></th><th style="width:100%">Item</th><th>Qty</th><th>Cost</th></tr></thead><tbody>${rows.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;});
     const hr=[];HOME.forEach(g=>g.items.forEach(([id,l,o])=>{if(!applies(o))return;if(frac(o,S.homeItems[id])>=1)return;if(o&&o.opt)return;const f=frac(o,S.homeItems[id]),C=o&&o.c?cs(o):null;const need=o&&o.q?` (${+(tq(o)-(Number(S.homeItems[id])||0)).toFixed(1)} ${o.unit} more)`:'';hr.push(`<tr><td>☐</td><td>${esc(l)}${esc(need)}</td><td class="n">${C?money(C[0]*(1-f),C[1]*(1-f)):'free'}</td></tr>`);}));
-    html+=`<div class="pcard"><h3>For the whole home</h3>${hr.length?`<table class="t"><tbody>${hr.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;
-    $('#paper').innerHTML=html;
+    html+=`<div class="pcard shop"><h3>For the whole home</h3>${hr.length?`<table class="t"><tbody>${hr.join('')}</tbody></table>`:'<p>Everything is done.</p>'}</div>`;
+    OUT+=html;
   }
+  $('#paper').innerHTML=OUT;
 }
-function renderAll(){renderList();renderHome();renderEmergency();renderPrintWho();renderPaper();}
+function renderAll(){renderList();renderHome();renderEmergency();renderPaper();}
 
-function show(tab){document.querySelectorAll('nav.tabs [role=tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
-  document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+tab);updateStart();
-  if(tab==='list')renderList();if(tab==='emergency')renderEmergency();if(tab==='print'){renderPrintWho();renderPaper();}}
+function show(tab){const view=tab==='printsave'?'emergency':tab;
+  document.querySelectorAll('nav.tabs [role=tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
+  const sel=document.querySelector(`nav.tabs [data-tab="${tab}"]`);if(sel){const bar=sel.parentElement;const l=sel.offsetLeft-bar.offsetLeft;if(l<bar.scrollLeft||l+sel.offsetWidth>bar.scrollLeft+bar.clientWidth)bar.scrollTo({left:l-20,behavior:'smooth'});}
+  document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+view);
+  S.tab=view;save();
+  if(view==='list')renderList();if(view==='emergency'){renderEmergency();renderPaper();}}
+function go(tab){show(tab);
+  if(tab==='printsave'){requestAnimationFrame(()=>$('#printsave').scrollIntoView({behavior:'smooth'}));return;}
+  const top=document.querySelector('nav.tabs').offsetTop;if(window.scrollY>top||tab==='emergency')window.scrollTo({top,behavior:'smooth'});}
 document.addEventListener('click',e=>{
-  const go=e.target.closest('[data-go]');if(go){show(go.dataset.go);window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'});return;}
-  const tab=e.target.closest('[data-tab]');if(tab){show(tab.dataset.tab);return;}
+  const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return;}
+  const tab=e.target.closest('[data-tab]');if(tab){go(tab.dataset.tab);return;}
   const why=e.target.closest('[data-why]');if(why){e.preventDefault();show('why');const t=document.getElementById(why.dataset.why);if(t)t.scrollIntoView({behavior:'smooth'});return;}
   const stb=e.target.closest('[data-stat]');if(stb){statClick(stb.dataset.stat);return;}
   const ch=e.target.closest('[data-person]');if(ch){S.active=ch.dataset.person;save();renderList();return;}
@@ -749,14 +781,15 @@ $('#onlyMissing').addEventListener('change',e=>{S.onlyMissing=e.target.checked;s
 $('#addPerson').addEventListener('click',()=>{const p={id:uid(),name:'',driver:false,meds:false};S.people.push(p);save();renderAll();const i=document.getElementById('n-'+p.id);if(i)i.focus();});
 $('#peopleList').addEventListener('input',e=>{const row=e.target.closest('[data-pid]');if(!row)return;const p=S.people.find(x=>x.id===row.dataset.pid);const f=e.target.dataset.pf;if(!f)return;
   p[f]=e.target.type==='checkbox'?e.target.checked:e.target.value;save();
-  if(e.target.type==='checkbox')renderAll();else{renderPrintWho();document.querySelectorAll(`[data-mid="${p.id}"] label`)[0].textContent=(p.name||'Unnamed')+': medicines and doses';}});
+  if(e.target.type==='checkbox')renderAll();else{document.querySelectorAll(`[data-mid="${p.id}"] label`)[0].textContent=(p.name||'Unnamed')+': medicines and doses';}});
 $('#county').addEventListener('change',e=>{S.home.county=e.target.value;const c=COUNTIES[e.target.value];if(c&&!S.home.station)S.home.station=c.st;save();renderHome();renderEmergency();});
 $('#station').addEventListener('change',e=>{S.home.station=e.target.value;save();});
 $('#well').addEventListener('change',e=>{S.home.well=e.target.value;save();renderAll();});
 $('#review').addEventListener('change',e=>{S.home.review=e.target.value;save();});
 $('#homeFields').addEventListener('input',e=>{const k=e.target.dataset.f;if(k){S.fields[k]=e.target.value;save();}});
 $('#medFields').addEventListener('input',e=>{const r=e.target.closest('[data-mid]');const k=e.target.dataset.m;if(!r||!k)return;(S.med[r.dataset.mid]=S.med[r.dataset.mid]||{})[k]=e.target.value;save();});
-['printWhat','printWho','printMed'].forEach(id=>$('#'+id).addEventListener('change',renderPaper));
+$('#printMed').addEventListener('change',renderPaper);
+$('#previewBtn').addEventListener('click',()=>{const p=$('#paper'),open=p.classList.toggle('collapsed')===false;$('#previewBtn').setAttribute('aria-expanded',open);$('#previewBtn').textContent=open?'Hide preview':'Show what will print';if(open)renderPaper();});
 $('#printBtn').addEventListener('click',()=>{renderPaper();try{window.print();}catch(e){toast('Printing is blocked here. Open the app in its own tab to print.');}});
 function download(name,text,type){try{const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);toast('Downloading '+name);}catch(e){toast('Downloads are blocked here. Open the app in its own tab.');}}
 const today=()=>new Date().toISOString().slice(0,10);
@@ -775,12 +808,7 @@ function setupStart(){
   const box=$('#installHow');const mine=box.querySelector(`[data-os="${os}"]`);if(mine&&os!=='desktop'){mine.classList.add('mine');box.prepend(mine);box.querySelectorAll('[data-os]').forEach(d=>{if(d!==mine)d.classList.add('other');});const ob=$('#otherDevices');ob.hidden=false;ob.addEventListener('click',()=>{box.classList.add('all');ob.hidden=true;});}
   if(standalone){$('#installDone').hidden=false;box.hidden=true;$('#otherDevices').hidden=true;}
   if(!standalone&&(/FBAN|FBAV|Instagram|Line\/|GSA\/|; wv\)/.test(ua)||(isIOS&&/CriOS|FxiOS|EdgiOS/.test(ua))))$('#inAppNote').hidden=false;
-  updateStart();
 }
-function updateStart(){const onList=!$('#v-list').hidden;$('#startHere').hidden=!(onList&&!S.hideStart);$('#showStart2').hidden=!S.hideStart;}
-$('#hideStart').addEventListener('click',()=>{S.hideStart=true;save();updateStart();toast('Hidden. Tap "How to use this app" at the top of the Checklist to see it again.');});
-$('#showStart2').addEventListener('click',()=>$('#showStart').click());
-$('#showStart').addEventListener('click',()=>{S.hideStart=false;save();show('list');updateStart();$('#startHere').scrollIntoView({behavior:'smooth'});});
 const shareURL=()=>(location.protocol.startsWith('http')&&location.hostname.endsWith('github.io'))?location.href.split('#')[0]:PUBLIC_URL;
 const shareMsg=()=>`Here's our family winter emergency checklist. It shows what each person needs for 2 weeks without power, and what to do in an outage.\n\n1. Tap this link: ${shareURL()}\n2. Put it on your home screen. iPhone: in Safari, tap Share, then "Add to Home Screen." Android: in Chrome, tap the 3 dots, then "Add to Home screen."\n3. Open it from that icon each time and it remembers what you've checked off.\n\nNothing you type is sent anywhere. It stays on your phone.`;
 $('#shareBtn').addEventListener('click',async()=>{
@@ -799,9 +827,9 @@ function statClick(k){
   else if(k==='next'){const p=S.people.find(x=>x.id===S.active),st=personStore(p);let tgt=null;
     PERSON.some(g=>g.items.some(([id,,o])=>{if(!applies(o,p)||(o&&o.opt))return false;if(frac(o,st[id])<1){tgt=id;return true;}return false;}));
     if(!tgt){toast('Everything on this list is done.');return;}goToItem(`[data-k="p:${tgt}"]`);}
-  else if(k==='shop'){show('print');$('#printWhat').value='shop';$('#printWho').value=S.active;renderPaper();$('#v-print').scrollIntoView({behavior:'smooth'});}
+  else if(k==='shop'){show('printsave');renderPaper();const p=$('#paper');p.classList.remove('collapsed');$('#previewBtn').setAttribute('aria-expanded','true');$('#previewBtn').textContent='Hide preview';requestAnimationFrame(()=>$('#shopStart').scrollIntoView({behavior:'smooth'}));}
 }
-load();renderAll();setupStart();
+load();renderAll();setupStart();show(['start','home','list','emergency','why'].includes(S.tab)?S.tab:'start');
 if(!PREVIEW&&'serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 if(!PREVIEW&&navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(()=>{});}
 })();
